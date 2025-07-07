@@ -1,8 +1,13 @@
 const Recipe = require("../models/Recipe");
 
 const RecipeController = {
-  index: (req, res) => {
-    return res.json({ message: "Get all recipes." });
+  index: async (req, res) => {
+    try {
+        const recipes = await Recipe.find().sort({ createdAt : -1 });
+        return res.json(recipes);
+    } catch (e) {
+        return res.status(400).json({ message : "Error at retrieving data" })
+    }
   },
   store: async (req, res) => {
     try {
@@ -18,8 +23,14 @@ const RecipeController = {
       return res.status(400).json({ message: "invalid fields" });
     }
   },
-  show: (req, res) => {
-    return res.json({ message: "Get single recipe." });
+  show: async (req, res) => {
+    try {
+        const id = req.params.id;
+        const showRecipe = await Recipe.findById(id);
+        return res.json(showRecipe);
+    } catch (e) {
+        return res.status(404).json({message : "Recipe not found"});
+    }
   },
   destroy: (req, res) => {
     return res.json({ message: "Delete single recipe." });
