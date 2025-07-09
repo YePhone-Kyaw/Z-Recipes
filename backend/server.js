@@ -4,8 +4,10 @@ require("dotenv").config();
 
 const recipeRoutes = require("./routes/recipes");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 const app = express();
+
 mongoose.connect(process.env.MONGODB_URL).then(() => {
   console.log("connected to db");
   app.listen(process.env.PORT, () => {
@@ -13,6 +15,7 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
   });
 });
 
+app.use(cors()); //Only for local development;
 app.use(express.json());
 app.use(morgan("dev"));
 
