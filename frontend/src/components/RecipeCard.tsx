@@ -1,3 +1,5 @@
+import Ingredients from "./Ingredients";
+
 export type Recipe = {
     _id: string;
     title: string;
@@ -24,11 +26,7 @@ export default function RecipeCard({ recipe } : { recipe : Recipe  }) {
               <span className="block text-sm font-semibold text-gray-500 mb-1">
                 Ingredients:
               </span>
-              <ul className="list-disc list-inside text-gray-800 text-sm space-y-1">
-                {!!recipe.ingredients.length && recipe.ingredients.map((ingredient, i) => (
-                  <li key={i}>{ingredient}</li>
-                ))}
-              </ul>
+              <Ingredients ingredients={recipe.ingredients} />
             </div>
             <div className="mt-auto text-xs text-gray-400 pt-2 border-t border-pink-50">
               Posted: {(recipe.createdAt)}
