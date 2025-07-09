@@ -1,3 +1,6 @@
+import plus from '../assets/plus.svg';
+import Ingredients from '../components/Ingredients';
+
 export default function RecipeForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100 py-10 px-2">
@@ -26,25 +29,18 @@ export default function RecipeForm() {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-1 text-gray-700">Ingredients</label>
-          <div className="space-y-2">
+          <div className=" flex items-center gap-3">
             <input
               type="text"
               className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300"
-              placeholder="Ingredient 1"
+              placeholder="Ingredients"
               required
             />
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300"
-              placeholder="Ingredient 2"
-              required
-            />
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300"
-              placeholder="Ingredient 3"
-              required
-            />
+            <img className='cursor-pointer' src={plus} />
+          </div>
+          <div className='flex gap-2 mt-5'>
+            <h4>Ingredients - </h4>
+          <Ingredients ingredients={['3 Eggs', 'Water']}/>
           </div>
         </div>
         <div className="mb-6">
