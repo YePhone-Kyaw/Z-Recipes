@@ -7,6 +7,7 @@ import App from './App'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import RecipeForm from './pages/RecipeForm'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path : '/contact',
         element : <Contact />
+      },
+      {
+        path : '/recipes/create',
+        element : <RecipeForm />
       }
     ]
   }
