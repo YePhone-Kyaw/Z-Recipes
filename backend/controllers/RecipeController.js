@@ -54,8 +54,24 @@ const RecipeController = {
         return res.status(500).json({ message: "Internal server error" });
       }
   },
-  update: (req, res) => {
-    return res.json({ message: "Update recipe." });
+  update: async (req, res) => {
+    try {
+      const id = req.params.id;
+      // validate the valid id or not
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message : "Not a valid id" });
+      }
+      const showRecipe = await Recipe.findByIdAndUpdate(id, {
+        ...req.body
+      });
+      // check the recipe exists in db or not even though the id might be valid format
+      if (!showRecipe) {
+        return res.status(404).json({ message : "Recipe not found" });
+      }
+      return res.json(showRecipe);
+    } catch (e) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
   },
 };
 
