@@ -22,7 +22,7 @@ export default function RecipeCard({ recipe } : { recipe : Recipe  }) {
               {recipe.title}
             </h2>
             <p className="text-gray-700 mb-3">{recipe.description}</p>
-            <div className="mb-3">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="block text-sm font-semibold text-gray-500 mb-1">
                 Ingredients:
               </span>
