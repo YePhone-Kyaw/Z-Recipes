@@ -46,8 +46,8 @@ export default function Home() {
     fetchRecipes();
   }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 py-10 px-4">
-      <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div className="min-h-screen p-4">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {recipes.length && recipes.map((recipe) => (
           <RecipeCard key={recipe._id} recipe={recipe}/>
         ))}
