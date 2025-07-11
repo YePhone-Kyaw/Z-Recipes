@@ -3,6 +3,8 @@ import plus from "../assets/plus.svg";
 import Ingredients from "../components/Ingredients";
 
 export default function RecipeForm() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState("");
 
@@ -11,9 +13,19 @@ export default function RecipeForm() {
     setNewIngredient("");
   };
 
+  const createRecipe = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const recipe = {
+      title,
+      description,
+      ingredients
+    }
+    console.log(recipe);
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100 py-10 px-2">
-      <form className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg border border-pink-100">
+      <form className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg border border-pink-100" onSubmit={createRecipe}>
         <h2 className="text-2xl font-bold text-pink-600 mb-6 text-center flex items-center gap-2 justify-center">
           <span role="img" aria-label="cake">
             🍰
@@ -25,10 +37,12 @@ export default function RecipeForm() {
             Title
           </label>
           <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
             type="text"
             className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300"
             placeholder="e.g. Strawberry Cake"
-            required
+            // required
           />
         </div>
         <div className="mb-4">
@@ -36,9 +50,11 @@ export default function RecipeForm() {
             Description
           </label>
           <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
             className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300 resize-none min-h-[80px]"
             placeholder="How to make this recipe..."
-            required
+            // required
           />
         </div>
         <div className="mb-4">
@@ -58,7 +74,7 @@ export default function RecipeForm() {
               type="text"
               className="w-full px-4 py-2 border border-pink-200 rounded focus:outline-none focus:ring-2 focus:ring-pink-300"
               placeholder="Ingredients"
-              required
+              // required
             />
             <img
               className="cursor-pointer"
