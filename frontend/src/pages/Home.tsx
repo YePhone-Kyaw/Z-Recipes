@@ -39,7 +39,7 @@ export default function Home() {
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
       </div>
-      <Pagination links={links} page={page} />
+      <Pagination links={links} />
     </div>
   );
 }

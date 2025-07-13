@@ -9,10 +9,7 @@ interface PaginationProps {
   };
 }
 
-export default function Pagination(
-  { links }: PaginationProps,
-  { page }: { page: number }
-) {
+export default function Pagination({ links }: PaginationProps) {
   return (
     <div className="flex items-center justify-center gap-2 mt-8">
       {/* Previous Button */}
@@ -36,16 +33,26 @@ export default function Pagination(
       {/* Page Numbers */}
       <div className="flex items-center gap-1">
         {links.loopableLinks.map((link) => {
-          if (links.currentPage == page) {
+          if (links.currentPage === link.number) {
             return (
-              <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+              <Link 
+                key={link.number} 
+                to={`?page=${link.number}`} 
+                className="px-3 py-2 text-sm font-medium bg-pink-500 text-white rounded-lg shadow-lg transform scale-105 transition-all duration-200"
+              >
                 {link.number}
               </Link>
             );
           } else {
-            <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
-              {link.number}
-            </Link>;
+            return (
+              <Link 
+                key={link.number} 
+                to={`?page=${link.number}`} 
+                className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md"
+              >
+                {link.number}
+              </Link>
+            );
           }
         })}
       </div>
