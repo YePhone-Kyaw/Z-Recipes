@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface PaginationProps {
   links: {
     nextPage: boolean;
@@ -36,14 +38,14 @@ export default function Pagination(
         {links.loopableLinks.map((link) => {
           if (links.currentPage == page) {
             return (
-              <button className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+              <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
                 1
-              </button>
+              </Link>
             );
           } else {
-            <button className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+            <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
               2
-            </button>;
+            </Link>;
           }
         })}
       </div>
