@@ -39,12 +39,12 @@ export default function Pagination(
           if (links.currentPage == page) {
             return (
               <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
-                1
+                {link.number}
               </Link>
             );
           } else {
             <Link key={link.number} to={""} className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
-              2
+              {link.number}
             </Link>;
           }
         })}
