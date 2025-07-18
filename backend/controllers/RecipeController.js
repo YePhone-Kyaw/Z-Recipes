@@ -3,13 +3,16 @@ const mongoose = require("mongoose");
 
 const RecipeController = {
   index: async (req, res) => {
-    const limit = 6;
+    const limit = 12;
     const page = req.query.page || 1;
     try {
       const recipes = await Recipe.find()
         .skip((page - 1) * limit)
         .limit(limit)
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 }); 
+
+      
+        const totalRecipeCount = await Recipe.countDocuments();
 
       return res.json(recipes);
     } catch (e) {
