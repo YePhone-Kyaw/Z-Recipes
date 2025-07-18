@@ -7,9 +7,10 @@ interface PaginationProps {
     currentPage: number;
     loopableLinks: { number: number }[];
   };
+  page: string | number;
 }
 
-export default function Pagination({ links }: PaginationProps) {
+export default function Pagination({ links, page }: PaginationProps) {
   return (
     <div className="flex items-center justify-center gap-2 mt-8">
       {/* Previous Button */}
@@ -33,7 +34,7 @@ export default function Pagination({ links }: PaginationProps) {
       {/* Page Numbers */}
       <div className="flex items-center gap-1">
         {links.loopableLinks.map((link) => {
-          if (links.currentPage === link.number) {
+          if (link.number === page) {
             return (
               <Link 
                 key={link.number} 

@@ -27,6 +27,8 @@ export default function Home() {
       if (response.ok) {
         const data = await response.json();
         setRecipes(data);
+
+        window.scroll({top : 0, left : 0, behavior : 'smooth'});
       }
     };
     fetchRecipes();
@@ -39,7 +41,7 @@ export default function Home() {
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
       </div>
-      <Pagination links={links} />
+      <Pagination links={links} page={page || 1} />
     </div>
   );
 }
