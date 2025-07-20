@@ -6,29 +6,24 @@ import { useLocation } from "react-router-dom";
 
 export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [links, setLinks] = useState(null);
+  
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search);
-  const page = searchQuery.get("page");
-
-  const links = {
-    nextPage : true,
-    previousPage : false,
-    currentPage : 1,
-    loopableLinks: [
-      { number : 1 },
-      { number : 2 },
-      { number : 3 },
-    ]
-  }
+  const pageUrl = searchQuery.get("page"); 
+  const page = Number(pageUrl);
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const response = await fetch("http://localhost:4000/api/recipes?page="+page);
+      const response = await fetch(
+        "http://localhost:4000/api/recipes?page=" + page
+      );
       if (response.ok) {
         const data = await response.json();
-        setRecipes(data);
+        setLinks(data.links);
+        setRecipes(data.data);
 
-        window.scroll({top : 0, left : 0, behavior : 'smooth'});
+        window.scroll({ top: 0, left: 0, behavior: "smooth" });
       }
     };
     fetchRecipes();
@@ -41,7 +36,7 @@ export default function Home() {
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
       </div>
-      <Pagination links={links} page={page || 1} />
+      {!!links && <Pagination links={links} page={ page || 1 } />}
     </div>
   );
 }

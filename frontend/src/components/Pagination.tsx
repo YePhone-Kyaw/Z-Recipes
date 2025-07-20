@@ -7,14 +7,14 @@ interface PaginationProps {
     currentPage: number;
     loopableLinks: { number: number }[];
   };
-  page: string | number;
+  page: number | string;
 }
 
 export default function Pagination({ links, page }: PaginationProps) {
   return (
     <div className="flex items-center justify-center gap-2 mt-8">
       {/* Previous Button */}
-      <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+      <Link to={`${links.previousPage ? '/?page=' + (Number(page)- 1) : '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
         <svg
           className="w-4 h-4"
           fill="none"
@@ -29,12 +29,12 @@ export default function Pagination({ links, page }: PaginationProps) {
           />
         </svg>
         Previous
-      </button>
+      </Link>
 
       {/* Page Numbers */}
       <div className="flex items-center gap-1">
         {links.loopableLinks.map((link) => {
-          if (link.number === page) {
+          if (link.number == page) {
             return (
               <Link 
                 key={link.number} 
@@ -59,7 +59,7 @@ export default function Pagination({ links, page }: PaginationProps) {
       </div>
 
       {/* Next Button */}
-      <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+      <Link to={`${links.nextPage ? '/?page=' + (Number(page) + 1 ): '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
         Next
         <svg
           className="w-4 h-4"
@@ -74,7 +74,7 @@ export default function Pagination({ links, page }: PaginationProps) {
             d="M9 5l7 7-7 7"
           />
         </svg>
-      </button>
+      </Link>
     </div>
   );
 }

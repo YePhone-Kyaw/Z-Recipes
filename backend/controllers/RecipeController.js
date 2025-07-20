@@ -3,18 +3,37 @@ const mongoose = require("mongoose");
 
 const RecipeController = {
   index: async (req, res) => {
-    const limit = 12;
-    const page = req.query.page || 1;
+    const limit = 6;
+    const page = Math.max(1,  req.query.page || 1);
     try {
       const recipes = await Recipe.find()
         .skip((page - 1) * limit)
         .limit(limit)
-        .sort({ createdAt: -1 }); 
+        .sort({ createdAt: -1 });
 
-      
-        const totalRecipeCount = await Recipe.countDocuments();
+      const totalRecipeCount = await Recipe.countDocuments();
 
-      return res.json(recipes);
+      const totalPagesCount = Math.ceil(totalRecipeCount / limit);
+
+      const links = {
+        nextPage: page == totalPagesCount ? false : true,
+        previousPage: page == 1 ? false : true,
+        currentPage: page,
+        loopableLinks: [],
+      };
+
+      //generate loopable links array
+      for (let i = 0; i < totalPagesCount; i++) {
+        const pageNumber = i + 1;
+        links.loopableLinks.push({ number: pageNumber });
+      }
+
+      const response = {
+        links,
+        data: recipes,
+      };
+
+      return res.json(response);
     } catch (e) {
       return res.status(400).json({ message: "Error at retrieving data" });
     }
