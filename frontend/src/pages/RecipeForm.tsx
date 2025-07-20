@@ -1,17 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import plus from "../assets/plus.svg";
 import Ingredients from "../components/Ingredients";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function RecipeForm() {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState("");
   const [error, setError] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      if (id) {
+        const response = await fetch("http://localhost:4000/api/recipes/" + id);
+        if (response.status === 200) {
+        const data = await response.json();
+          setTitle(data.title);
+          setDescription(data.description);
+          setIngredients(data.ingredients);
+        }
+      }
+    };
+    fetchRecipes();
+  }, [id]);
 
   const addIngredient = () => {
     setIngredients((prevState) => [newIngredient, ...prevState]);
@@ -30,7 +46,11 @@ export default function RecipeForm() {
       //server request
       const res = await axios.post("http://localhost:4000/api/recipes", recipe);
       if (res.status === 200) {
-        toast.success("Recipe created successfully!");
+        if(id) {
+          toast.success("Recipe updated successfully!");
+        } else {
+          toast.success("Recipe created successfully!");
+        }
         setTimeout(() => {
           navigate("/");
         }, 2000);
@@ -59,7 +79,6 @@ export default function RecipeForm() {
         theme="colored"
         transition={Bounce}
       />
-      ;
       <form
         className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg border border-pink-100"
         onSubmit={createRecipe}
@@ -68,7 +87,7 @@ export default function RecipeForm() {
           <span role="img" aria-label="cake">
             🍰
           </span>{" "}
-          Add a New Recipe
+          {id ? 'Edit Your Recipe' : 'Add a New Recipe'}
         </h2>
         {!!error.length && (
           <div className="mb-6 bg-pink-100 border border-pink-300 text-pink-700 rounded-lg px-4 py-3">
@@ -146,7 +165,8 @@ export default function RecipeForm() {
         </div>
         <div className="flex gap-5 items-center">
           <button
-            type="submit"
+            type="button"
+            onClick={() => navigate('/')}
             className="w-full bg-white border border-pink-300 text-pink-500 hover:bg-pink-50 font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg mt-2"
           >
             Cancel
@@ -155,7 +175,7 @@ export default function RecipeForm() {
             type="submit"
             className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg"
           >
-            Submit Recipe
+            {id ? 'Update Recipe' : 'Submit Recipe'}
           </button>
         </div>
       </form>
