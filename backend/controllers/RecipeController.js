@@ -12,8 +12,11 @@ const RecipeController = {
         .sort({ createdAt: -1 });
 
       const totalRecipeCount = await Recipe.countDocuments();
-
       const totalPagesCount = Math.ceil(totalRecipeCount / limit);
+
+      if (page > totalPagesCount && totalPagesCount > 0) {
+        page = totalPagesCount;
+      }
 
       const links = {
         nextPage: page == totalPagesCount ? false : true,
