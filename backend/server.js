@@ -3,6 +3,7 @@ const morgan = require("morgan");
 require("dotenv").config();
 
 const recipeRoutes = require("./routes/recipes");
+const usersRoutes = require("./routes/users");
 const mongoose = require("mongoose");
 const cors = require('cors');
 
@@ -24,3 +25,4 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/users", usersRoutes);

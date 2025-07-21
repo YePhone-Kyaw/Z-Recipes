@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const RecipeController = {
   index: async (req, res) => {
     const limit = 6;
-    const page = Math.max(1,  req.query.page || 1);
+    const page = Math.max(1, req.query.page || 1);
     try {
       const recipes = await Recipe.find()
         .skip((page - 1) * limit)
@@ -13,10 +13,6 @@ const RecipeController = {
 
       const totalRecipeCount = await Recipe.countDocuments();
       const totalPagesCount = Math.ceil(totalRecipeCount / limit);
-
-      if (page > totalPagesCount && totalPagesCount > 0) {
-        page = totalPagesCount;
-      }
 
       const links = {
         nextPage: page == totalPagesCount ? false : true,
