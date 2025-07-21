@@ -19,7 +19,7 @@ export default function RecipeForm() {
       if (id) {
         const response = await fetch("http://localhost:4000/api/recipes/" + id);
         if (response.status === 200) {
-        const data = await response.json();
+          const data = await response.json();
           setTitle(data.title);
           setDescription(data.description);
           setIngredients(data.ingredients);
@@ -44,9 +44,14 @@ export default function RecipeForm() {
       };
 
       //server request
-      const res = await axios.post("http://localhost:4000/api/recipes", recipe);
+      let res;
+      if (id) {
+        res = await axios.patch("http://localhost:4000/api/recipes/" + id, recipe);
+      } else {
+        res = await axios.post("http://localhost:4000/api/recipes", recipe);
+      }
       if (res.status === 200) {
-        if(id) {
+        if (id) {
           toast.success("Recipe updated successfully!");
         } else {
           toast.success("Recipe created successfully!");
@@ -87,7 +92,7 @@ export default function RecipeForm() {
           <span role="img" aria-label="cake">
             🍰
           </span>{" "}
-          {id ? 'Edit Your Recipe' : 'Add a New Recipe'}
+          {id ? "Edit Your Recipe" : "Add a New Recipe"}
         </h2>
         {!!error.length && (
           <div className="mb-6 bg-pink-100 border border-pink-300 text-pink-700 rounded-lg px-4 py-3">
@@ -148,9 +153,12 @@ export default function RecipeForm() {
               onClick={addIngredient}
             />
           </div>
-          <div className="flex gap-2 mt-5">
-            <h4>Ingredients - </h4>
-            <Ingredients ingredients={ingredients} />
+          <div className="flex flex-col gap-2 mt-5">
+            <h4 className="font-semibold text-sm text-gray-700 mb-1">Ingredients</h4>
+            <Ingredients
+              ingredients={ingredients}
+              onRemove={(idx: number) => setIngredients(ingredients.filter((_, i) => i !== idx))}
+            />
           </div>
         </div>
         <div className="mb-6">
@@ -166,7 +174,7 @@ export default function RecipeForm() {
         <div className="flex gap-5 items-center">
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="w-full bg-white border border-pink-300 text-pink-500 hover:bg-pink-50 font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg mt-2"
           >
             Cancel
@@ -175,7 +183,7 @@ export default function RecipeForm() {
             type="submit"
             className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg"
           >
-            {id ? 'Update Recipe' : 'Submit Recipe'}
+            {id ? "Update Recipe" : "Submit Recipe"}
           </button>
         </div>
       </form>
