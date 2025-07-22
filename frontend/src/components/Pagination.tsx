@@ -14,7 +14,7 @@ export default function Pagination({ links, page }: PaginationProps) {
   return (
     <div className="flex items-center justify-center gap-2 mt-8">
       {/* Previous Button */}
-      <Link to={`${links.previousPage ? '/?page=' + (Number(page)- 1) : '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+      <Link to={`${links.previousPage ? '/?page=' + (Number(page)- 1) : '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-amber-600 bg-white border border-amber-300 rounded-lg hover:bg-amber-50 transition-all duration-200 hover:shadow-md">
         <svg
           className="w-4 h-4"
           fill="none"
@@ -39,7 +39,7 @@ export default function Pagination({ links, page }: PaginationProps) {
               <Link 
                 key={link.number} 
                 to={`?page=${link.number}`} 
-                className="px-3 py-2 text-sm font-medium bg-pink-500 text-white rounded-lg shadow-lg transform scale-105 transition-all duration-200"
+                className="px-3 py-2 text-sm font-medium bg-amber-500 text-white rounded-lg shadow-lg transform scale-105 transition-all duration-200"
               >
                 {link.number}
               </Link>
@@ -49,7 +49,7 @@ export default function Pagination({ links, page }: PaginationProps) {
               <Link 
                 key={link.number} 
                 to={`?page=${link.number}`} 
-                className="px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md"
+                className="px-3 py-2 text-sm font-medium text-amber-600 bg-white border border-amber-300 rounded-lg hover:bg-amber-50 transition-all duration-200 hover:shadow-md"
               >
                 {link.number}
               </Link>
@@ -59,7 +59,7 @@ export default function Pagination({ links, page }: PaginationProps) {
       </div>
 
       {/* Next Button */}
-      <Link to={`${links.nextPage ? '/?page=' + (Number(page) + 1 ): '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-pink-600 bg-white border border-pink-300 rounded-lg hover:bg-pink-50 transition-all duration-200 hover:shadow-md">
+      <Link to={`${links.nextPage ? '/?page=' + (Number(page) + 1 ): '/?page=' + page}`} className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-amber-600 bg-white border border-amber-300 rounded-lg hover:bg-amber-50 transition-all duration-200 hover:shadow-md">
         Next
         <svg
           className="w-4 h-4"

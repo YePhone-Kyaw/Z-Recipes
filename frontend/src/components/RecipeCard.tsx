@@ -30,7 +30,7 @@ export default function RecipeCard({
   return (
     <div
       key={recipe._id}
-      className="bg-white rounded-xl shadow-lg p-6 flex flex-col hover:shadow-2xl transition-shadow duration-200 border border-pink-100"
+      className="bg-white rounded-xl shadow-lg p-6 flex flex-col hover:shadow-2xl transition-shadow duration-200 border border-amber-100"
     >
       <ToastContainer
         position="top-center"
@@ -45,9 +45,9 @@ export default function RecipeCard({
         theme="colored"
         transition={Bounce}
       />
-      <h2 className="text-xl font-bold text-pink-600 mb-2 flex items-center gap-2">
-        <span role="img" aria-label="cake">
-          🍰
+      <h2 className="text-xl font-bold text-amber-600 mb-2 flex items-center gap-2">
+        <span role="img" aria-label="orange">
+          🍊
         </span>{" "}
         {recipe.title}
       </h2>
@@ -58,12 +58,12 @@ export default function RecipeCard({
         </span>
         <Ingredients ingredients={recipe.ingredients} />
       </div>
-      <div className="mt-auto text-xs text-gray-400 pt-2 border-t border-pink-50 flex items-center justify-between">
+      <div className="mt-auto text-xs text-gray-400 pt-2 border-t border-amber-50 flex items-center justify-between">
         <span>Posted: {recipe.createdAt}</span>
         <div className="flex gap-2">
           <Link
             to={`/recipes/edit/${recipe._id}`}
-            className="flex items-center gap-1 px-3 py-1 bg-pink-50 text-pink-500 border border-pink-200 rounded-full shadow hover:bg-pink-100 hover:text-pink-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-pink-200"
+            className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-600 border border-amber-300 rounded-full shadow hover:bg-amber-200 hover:text-amber-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
             title="Edit Recipe"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ export default function RecipeCard({
           </Link>
           <button
             onClick={handleDelete}
-            className="flex items-center gap-1 px-3 py-1 bg-pink-100 text-pink-600 border border-pink-300 rounded-full shadow hover:bg-pink-200 hover:text-pink-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
+            className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-600 border border-amber-300 rounded-full shadow hover:bg-amber-200 hover:text-amber-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
             title="Delete Recipe"
           >
             <svg

@@ -42,8 +42,8 @@ export default function Home() {
     }
   };
   return (
-    <div className="min-h-screen p-4">
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-amber-50 to-lime-100 pt-16">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 my-10">
         {!!recipes.length &&
           recipes.map((recipe) => (
             <RecipeCard
