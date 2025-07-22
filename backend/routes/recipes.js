@@ -1,7 +1,7 @@
 const express = require('express');
 const RecipeController = require('../controllers/RecipeController');
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
 const handleErrorMessage = require('../middlewares/handleErrorMessage');
  
 // Get all recipes
