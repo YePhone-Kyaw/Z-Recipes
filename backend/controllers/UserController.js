@@ -11,7 +11,7 @@ const UserController = {
 
       //create token
       const token = createToken(user._id);
-      res.cookie("jwt", token);
+      res.cookie("jwt", token, { httpOnly : true, maxAge : 3 * 24 * 60 * 60 * 1000 });
 
       return res.json({user, token});
     } catch (e) {
