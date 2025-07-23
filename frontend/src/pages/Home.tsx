@@ -42,7 +42,7 @@ export default function Home() {
     }
   };
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-amber-50 to-lime-100 pt-16">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-amber-50 to-lime-100 pt-16 px-5">
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 my-10">
         {!!recipes.length &&
           recipes.map((recipe) => (

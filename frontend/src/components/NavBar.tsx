@@ -22,6 +22,12 @@ export default function NavBar() {
           <li>
             <Link to="/recipes/create" className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium">Create Recipe</Link>
           </li>
+          <li>
+            <Link to="/login" className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium">Login</Link>
+          </li>
+          <li>
+            <Link to="/sign-up" className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium">Register</Link>
+          </li>
         </ul>
       </div>
     </nav>
