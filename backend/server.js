@@ -17,7 +17,12 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
   });
 });
 
-app.use(cors()); //Only for local development;
+app.use(cors(
+  {
+    origin : 'http://localhost:5173',
+    credentials : true
+  }
+)); //Only for local development;
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
@@ -29,14 +34,14 @@ app.get("/", (req, res) => {
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/users", usersRoutes);
 
-app.get('/set-cookie', (req, res) => {
-  // res.setHeader('Set-Cookie', 'name=john');
-  res.cookie('name', 'john');
-  res.cookie('importantKey', 'importantValue', { httpOnly : true });
-  return res.send('cookie is already set');
-})
+// app.get('/set-cookie', (req, res) => {
+//   // res.setHeader('Set-Cookie', 'name=john');
+//   res.cookie('name', 'john');
+//   res.cookie('importantKey', 'importantValue', { httpOnly : true });
+//   return res.send('cookie is already set');
+// })
 
-app.get('/get-cookie', (req, res) => {
-  const cookies = req.cookies;
-  return res.json(cookies);
-})
+// app.get('/get-cookie', (req, res) => {
+//   const cookies = req.cookies;
+//   return res.json(cookies);
+// })
