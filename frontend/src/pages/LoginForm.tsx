@@ -2,6 +2,7 @@ import axios from "../helpers/axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../hooks/useAuth";
 
 
 export default function LoginForm() {
@@ -10,8 +11,9 @@ export default function LoginForm() {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+ const { login } = useAuth();
 
-  const login = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       setError(null);
@@ -29,6 +31,7 @@ export default function LoginForm() {
       if (response.status == 200) {
         toast.success("Welcome back!");
         setTimeout(() => {
+          login(response.data.user);
           navigate("/");
         }, 2000);
       }
@@ -41,7 +44,7 @@ export default function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-lime-100 py-10 px-2">
       <form
-        onSubmit={login}
+        onSubmit={handleLogin}
         className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-amber-100"
       >
         <h2 className="text-3xl font-bold text-amber-600 mb-6 text-center flex items-center gap-2 justify-center">
