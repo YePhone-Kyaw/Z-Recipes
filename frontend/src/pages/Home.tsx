@@ -12,7 +12,7 @@ export default function Home() {
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search);
   const pageUrl = searchQuery.get("page");
-  const page = Number(pageUrl);
+  const page = Number(pageUrl) ? Number(pageUrl) : 1;
   const navigate = useNavigate();
 
   const fetchRecipes = useCallback(async () => {
