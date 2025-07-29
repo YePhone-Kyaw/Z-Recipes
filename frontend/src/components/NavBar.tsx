@@ -1,9 +1,15 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function NavBar() {
-  const { user } = useContext(AuthContext);
+  // const { user } = useAuth();
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    return null;
+  }
+  const { user } = auth;
   console.log(user)
   
   return (

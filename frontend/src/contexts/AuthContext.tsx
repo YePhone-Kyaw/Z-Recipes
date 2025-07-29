@@ -1,9 +1,9 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, type ReactNode } from "react";
 
 type User = {
-    id : string;
+    // id : string;
     name: string;
-    email: string;
+    // email: string;
 };
 
 type AuthContextType = {
@@ -15,23 +15,27 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthContextProvider = ({ children } : { children : ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const login = (userData : User) => {
-        setUser(userData);
-    }
-    const logout = () => {
-        setUser(null);
-    }
+    // const [user, setUser] = useState<User | null>(null);
+    // const login = (userData : User) => {
+    //     setUser(userData);
+    // }
+    // const logout = () => {
+    //     setUser(null);
+    // }
     const value = {
-        user,
-        login,
-        logout,
+        user : {  name : 'Zayden' },
+        login : () => {},
+        logout : () => {},
     }
+
+
     return (
         <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     )
 }
+
+
 
 export { AuthContext, AuthContextProvider };
