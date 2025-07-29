@@ -18,5 +18,7 @@ router.post('/register',  [
     body('password').notEmpty()
 ], handleErrorMessage, UserController.register);
 
+router.post('/logout', UserController.logout);
+
 
 module.exports = router;
