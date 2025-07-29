@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../helpers/axios";
 import Ingredients from "./Ingredients";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -20,7 +20,7 @@ export default function RecipeCard({
 }) {
   const handleDelete = async () => {
     const res = await axios.delete(
-      "http://localhost:4000/api/recipes/" + recipe._id
+      "/api/recipes/" + recipe._id
     );
     if (res.status === 200) {
       toast.success("Recipe was successfully deleted!");

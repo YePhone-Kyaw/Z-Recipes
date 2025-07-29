@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../helpers/axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
@@ -35,7 +35,7 @@ export default function SignUpForm() {
     };
 
     const response = await axios.post(
-      "http://localhost:4000/api/users/register", data, { withCredentials : true });
+      "/api/users/register", data, { withCredentials : true });
       if (response.status == 200) {
         toast.success('Your account has been successfully created!');
         setTimeout(() => {

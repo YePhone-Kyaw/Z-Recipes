@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import plus from "../assets/plus.svg";
 import Ingredients from "../components/Ingredients";
-import axios from "axios";
+import axios from "../helpers/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
@@ -17,9 +17,9 @@ export default function RecipeForm() {
   useEffect(() => {
     const fetchRecipes = async () => {
       if (id) {
-        const response = await fetch("http://localhost:4000/api/recipes/" + id);
+        const response = await axios.get("/api/recipes/" + id);
         if (response.status === 200) {
-          const data = await response.json();
+          const data = await response.data;
           setTitle(data.title);
           setDescription(data.description);
           setIngredients(data.ingredients);
@@ -46,9 +46,9 @@ export default function RecipeForm() {
       //server request
       let res;
       if (id) {
-        res = await axios.patch("http://localhost:4000/api/recipes/" + id, recipe);
+        res = await axios.patch("/api/recipes/" + id, recipe);
       } else {
-        res = await axios.post("http://localhost:4000/api/recipes", recipe);
+        res = await axios.post("/api/recipes", recipe);
       }
       if (res.status === 200) {
         if (id) {

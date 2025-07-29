@@ -3,6 +3,7 @@ import type { Recipe } from "../components/RecipeCard";
 import RecipeCard from "../components/RecipeCard";
 import Pagination from "../components/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "../helpers/axios";
 
 export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -15,11 +16,11 @@ export default function Home() {
   const navigate = useNavigate();
 
   const fetchRecipes = useCallback(async () => {
-    const response = await fetch(
-      "http://localhost:4000/api/recipes?page=" + page
+    const response = await axios.get(
+      "/api/recipes?page=" + page
     );
-    if (response.ok) {
-      const data = await response.json();
+    if (response.status == 200) {
+      const data = await response.data;
       setLinks(data.links);
       setRecipes(data.data);
       window.scroll({ top: 0, left: 0, behavior: "smooth" });

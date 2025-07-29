@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../helpers/axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,7 +22,7 @@ export default function LoginForm() {
       };
 
       const response = await axios.post(
-        "http://localhost:4000/api/users/login",
+        "/api/users/login",
         data,
         { withCredentials: true }
       );
