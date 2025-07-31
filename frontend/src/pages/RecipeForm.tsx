@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import plus from "../assets/plus.svg";
 import Ingredients from "../components/Ingredients";
 import axios from "../helpers/axios";
@@ -14,20 +14,21 @@ export default function RecipeForm() {
   const [error, setError] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      if (id) {
-        const response = await axios.get("/api/recipes/" + id);
-        if (response.status === 200) {
-          const data = await response.data;
-          setTitle(data.title);
-          setDescription(data.description);
-          setIngredients(data.ingredients);
-        }
+  const fetchRecipes = useCallback(async () => {
+    if (id) {
+      const response = await axios.get("/api/recipes/" + id);
+      if (response.status === 200) {
+        const data = await response.data;
+        setTitle(data.title);
+        setDescription(data.description);
+        setIngredients(data.ingredients);
       }
-    };
-    fetchRecipes();
+    }
   }, [id]);
+
+  useEffect(() => {
+    fetchRecipes();
+  }, [fetchRecipes]);
 
   const addIngredient = () => {
     setIngredients((prevState) => [newIngredient, ...prevState]);
