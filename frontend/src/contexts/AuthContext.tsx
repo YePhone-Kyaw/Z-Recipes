@@ -1,4 +1,4 @@
-import { createContext, useReducer, type ReactNode } from "react";
+import { createContext, useEffect, useReducer, type ReactNode } from "react";
 
 type User = {
   name: string;
@@ -18,23 +18,41 @@ type AuthAction = { type: "LOGIN"; payload: User } | { type: "LOGOUT" };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  //action = {type, payload}
-  const AuthReducer = (state: AuthState, action: AuthAction) => {
-    switch (action.type) {
-      case "LOGIN":
-        return { user: action.payload };
-      case "LOGOUT":
-        return { user: null };
-      default:
-        return state;
-    }
-  };
+//action = {type, payload}
+const AuthReducer = (state: AuthState, action: AuthAction) => {
+  switch (action.type) {
+    case "LOGIN":
+      // store user in localstorage
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      return { user: action.payload };
+    case "LOGOUT":
+      // remove user from localstorage
+      localStorage.removeItem("user");
+      return { user: null };
+    default:
+      return state;
+  }
+};
 
+const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(AuthReducer, { user: null });
 
   const login = (user: User) => dispatch({ type: "LOGIN", payload: user });
   const logout = () => dispatch({ type: "LOGOUT" });
+
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        const user = JSON.parse(userData);
+        dispatch({ type: "LOGIN", payload: user });
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
+    } catch {
+      dispatch({ type: "LOGOUT" });
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ ...state, login, logout }}>
