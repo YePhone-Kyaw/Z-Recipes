@@ -27,38 +27,46 @@ export default function NavBar() {
           </h1>
         </div>
         <ul className="flex space-x-8 items-center">
-          <li>
-            <Link
-              to="/"
-              className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/about"
-              className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/contact"
-              className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
-            >
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/recipes/create"
-              className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
-            >
-              Create Recipe
-            </Link>
-          </li>
+          {user && (
+            <li>
+              <Link
+                to="/"
+                className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
+              >
+                Home
+              </Link>
+            </li>
+          )}
+          {user && (
+            <li>
+              <Link
+                to="/about"
+                className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
+              >
+                About
+              </Link>
+            </li>
+          )}
+          {user && (
+            <li>
+              <Link
+                to="/contact"
+                className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
+              >
+                Contact
+              </Link>
+            </li>
+          )}
+          {user && (
+            <li>
+              <Link
+                to="/recipes/create"
+                className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
+              >
+                Create Recipe
+              </Link>
+            </li>
+          )}
           {!user && (
             <>
               <li>
@@ -66,7 +74,7 @@ export default function NavBar() {
                   to="/login"
                   className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
                 >
-                  Login
+                  Sign in
                 </Link>
               </li>
               <li>
@@ -74,7 +82,7 @@ export default function NavBar() {
                   to="/sign-up"
                   className="hover:bg-gray-800 hover:text-amber-200 px-4 py-2 rounded transition-colors duration-200 font-medium"
                 >
-                  Register
+                  Sign up
                 </Link>
               </li>
             </>
