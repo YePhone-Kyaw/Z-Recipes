@@ -1,3 +1,4 @@
+const { Result } = require("express-validator");
 const Recipe = require("../models/Recipe");
 const mongoose = require("mongoose");
 
@@ -103,8 +104,17 @@ const RecipeController = {
 
   upload: async (req, res) => {
     try {
-      console.log(req.file);
-      return res.json({Image: "uploaded"});
+      const id = req.params.id;
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Not a valid id" });
+      }
+      const recipe = await Recipe.findByIdAndUpdate(id, {
+        photo : "/"+req.file.filename,
+      })
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe not found!" });
+      }
+      return res.json(recipe);
     } catch (e) {
       return res.status(500).json({ message: "Internal server error" });
     }
