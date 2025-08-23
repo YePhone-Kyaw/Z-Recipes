@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
 
 const app = express();
+app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URL).then(() => {
   console.log("connected to db");
