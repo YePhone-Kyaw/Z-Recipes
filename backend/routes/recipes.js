@@ -16,7 +16,19 @@ router.post('', [
 ], handleErrorMessage, RecipeController.store)
 
 // Add an image 
-router.post('/:id/upload', upload.single("photo"), RecipeController.upload);
+router.post('/:id/upload', [ 
+    upload.single("photo"),
+    body("photo").custom((value, { req }) => {
+        console.log(req.file);
+        if (!req.file) {
+            throw new Error("Photo is required!");
+        }
+        if (!req.file.mimetype.startsWith("image")) {
+            throw new Error("File must be an image!");
+        }
+        return true;
+    }),
+ ], handleErrorMessage, RecipeController.upload);
 
 // Get single recipe
 router.get('/:id', RecipeController.show)
