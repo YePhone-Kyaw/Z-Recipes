@@ -21,6 +21,7 @@ export default function RecipeForm() {
       const response = await axios.get("/api/recipes/" + id);
       if (response.status === 200) {
         const data = await response.data;
+        setPreview(import.meta.env.VITE_BACKEND_URL + data.photo);
         setTitle(data.title);
         setDescription(data.description);
         setIngredients(data.ingredients);
@@ -69,7 +70,6 @@ export default function RecipeForm() {
         console.log(uploadResponse);
       }
 
-      
       if (res.status === 200) {
         if (id) {
           toast.success("Recipe updated successfully!");
