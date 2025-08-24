@@ -1,6 +1,7 @@
 const { Result } = require("express-validator");
 const Recipe = require("../models/Recipe");
 const mongoose = require("mongoose");
+const removeFile = require("../helpers/removeFile");
 
 const RecipeController = {
   index: async (req, res) => {
@@ -55,12 +56,12 @@ const RecipeController = {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Not a valid id" });
       }
-      const showRecipe = await Recipe.findById(id);
+      const recipe = await Recipe.findById(id);
       // check the recipe exists in db or not even though the id might be valid format
-      if (!showRecipe) {
+      if (!recipe) {
         return res.status(404).json({ message: "Recipe not found" });
       }
-      return res.json(showRecipe);
+      return res.json(recipe);
     } catch (e) {
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -72,12 +73,15 @@ const RecipeController = {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Not a valid id" });
       }
-      const showRecipe = await Recipe.findByIdAndDelete(id);
+      const recipe = await Recipe.findByIdAndDelete(id);
+
+      removeFile(__dirname+"/../public/"+recipe.photo);
+
       // check the recipe exists in db or not even though the id might be valid format
-      if (!showRecipe) {
+      if (!recipe) {
         return res.status(404).json({ message: "Recipe not found" });
       }
-      return res.json(showRecipe);
+      return res.json(recipe);
     } catch (e) {
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -89,14 +93,16 @@ const RecipeController = {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Not a valid id" });
       }
-      const showRecipe = await Recipe.findByIdAndUpdate(id, {
+      const recipe = await Recipe.findByIdAndUpdate(id, {
         ...req.body,
       });
+      
+      removeFile(__dirname+"/../public/"+recipe.photo);
       // check the recipe exists in db or not even though the id might be valid format
-      if (!showRecipe) {
+      if (!recipe) {
         return res.status(404).json({ message: "Recipe not found" });
       }
-      return res.json(showRecipe);
+      return res.json(recipe);
     } catch (e) {
       return res.status(500).json({ message: "Internal server error" });
     }
