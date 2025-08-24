@@ -7,10 +7,12 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function RecipeForm() {
   const { id } = useParams();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [newIngredient, setNewIngredient] = useState("");
+  const [newIngredient, setNewIngredient] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -47,10 +49,27 @@ export default function RecipeForm() {
       //server request
       let res;
       if (id) {
+        // Update api
         res = await axios.patch("/api/recipes/" + id, recipe);
       } else {
+        // Create api
         res = await axios.post("/api/recipes", recipe);
       }
+
+      // File send to backend
+      if (file) {
+        const formData = new FormData();
+        formData.set("photo", file);
+      }
+      // Image upload
+      const uploadResponse = await axios.post(`/api/recipes/${res.data._id}/upload`, FormData, {
+        headers : {
+          Accept : "multipart/form-data"
+        }
+      });
+
+      console.log(uploadResponse);
+      
       if (res.status === 200) {
         if (id) {
           toast.success("Recipe updated successfully!");
@@ -69,6 +88,22 @@ export default function RecipeForm() {
       }
     }
   };
+
+  const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setFile(file);
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = (e) => {
+      const result = e.target?.result as string;
+      setPreview(result);
+    }
+
+    fileReader.readAsDataURL(file);
+  }
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-amber-50 to-lime-100 min-h-screen">
@@ -169,8 +204,10 @@ export default function RecipeForm() {
           <input
             type="file"
             accept="image/*"
+            onChange={upload}
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
           />
+          {preview && <img src={preview} />}
         </div>
         <div className="flex gap-5 items-center">
           <button
