@@ -58,17 +58,17 @@ export default function RecipeForm() {
 
       // File send to backend
       if (file) {
-        const formData = new FormData();
+        const formData = new FormData;
         formData.set("photo", file);
+        // Image upload
+        const uploadResponse = await axios.post(`/api/recipes/${res.data._id}/upload`, formData, {
+          headers : {
+            Accept : "multipart/form-data"
+          }
+        });
+        console.log(uploadResponse);
       }
-      // Image upload
-      const uploadResponse = await axios.post(`/api/recipes/${res.data._id}/upload`, FormData, {
-        headers : {
-          Accept : "multipart/form-data"
-        }
-      });
 
-      console.log(uploadResponse);
       
       if (res.status === 200) {
         if (id) {
