@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 export type Recipe = {
   _id: string;
   title: string;
+  photo: string;
   description: string;
   ingredients: string[];
   createdAt: string;
@@ -19,9 +20,7 @@ export default function RecipeCard({
   onDeleted: (id: string) => void;
 }) {
   const handleDelete = async () => {
-    const res = await axios.delete(
-      "/api/recipes/" + recipe._id
-    );
+    const res = await axios.delete("/api/recipes/" + recipe._id);
     if (res.status === 200) {
       toast.success("Recipe was successfully deleted!");
       onDeleted(recipe._id);
@@ -45,6 +44,17 @@ export default function RecipeCard({
         theme="colored"
         transition={Bounce}
       />
+      {recipe.photo ? (
+        <img
+          className="mx-auto h-52 object-contain"
+          src={import.meta.env.VITE_BACKEND_URL + recipe.photo}
+          alt={recipe.title}
+        />
+      ) : (
+        <div className="mx-auto h-52 w-full bg-gray-200 rounded-lg flex items-center justify-center">
+          <span className="text-gray-400 text-4xl">🍽️</span>
+        </div>
+      )}
       <h2 className="text-xl font-bold text-amber-600 mb-2 flex items-center gap-2">
         <span role="img" aria-label="orange">
           🍊
@@ -66,8 +76,18 @@ export default function RecipeCard({
             className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-600 border border-amber-300 rounded-full shadow hover:bg-amber-200 hover:text-amber-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
             title="Edit Recipe"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13z" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13z"
+              />
             </svg>
             Edit
           </Link>
