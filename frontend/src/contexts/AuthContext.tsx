@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useEffect, useReducer, type ReactNode } from "react";
 
 type User = {
@@ -42,14 +43,16 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        const user = JSON.parse(userData);
-        dispatch({ type: "LOGIN", payload: user });
-      } else {
-        dispatch({ type: "LOGOUT" });
-      }
+      axios.get('/api/users/me').then(res => {
+        const userData = res.data;
+        if (userData) {
+          dispatch({ type: "LOGIN", payload: userData });
+        } else {
+          dispatch({ type: "LOGOUT" });
+        }
+      })
     } catch {
+      console.log("Auth check failed")
       dispatch({ type: "LOGOUT" });
     }
   }, []);
