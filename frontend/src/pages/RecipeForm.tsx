@@ -58,7 +58,7 @@ export default function RecipeForm() {
 
       // File send to backend
       if (file) {
-        const formData = new FormData;
+        const formData = new FormData();
         formData.set("photo", file);
         // Image upload
         const uploadResponse = await axios.post(`/api/recipes/${res.data._id}/upload`, formData, {
