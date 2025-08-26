@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
+const cron = require('node-cron');
+const User = require("./models/User");
+
 const app = express();
 const nodemailer = require("nodemailer");
 
@@ -18,6 +21,12 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
   console.log("connected to db");
   app.listen(process.env.PORT, () => {
     console.log("app is listening at port 4000...");
+    cron.schedule('*/3 * * * * *', async () => {
+       const userName = await User.findByIdAndUpdate('687f047b2059d52295cc2335', {
+        name : 'Zayden'+" "+ Math.ceil(Math.random() * 10)
+      })
+    });
+    
   });
 });
 
