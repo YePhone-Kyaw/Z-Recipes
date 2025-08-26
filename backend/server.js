@@ -8,8 +8,10 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
-
 const app = express();
+const nodemailer = require("nodemailer");
+
+
 app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URL).then(() => {
@@ -35,6 +37,27 @@ app.get("/", (req, res) => {
 
 app.use("/api/recipes",AuthMiddleware, recipeRoutes);
 app.use("/api/users", usersRoutes);
+
+app.get('/send-email', async (req, res) => {
+var transport = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "5779666eb87085",
+    pass: "ab6ee6a39a7549"
+  }
+});
+  const info = await transport.sendMail({
+    from: '"Maddison Foo Koch" <maddison53@ethereal.email>',
+    to: "bar@example.com, baz@example.com",
+    subject: "Hello ✔",
+    text: "Hello world?", // plain‑text body
+    html: "<b>Hello world?</b>", // HTML body
+  });
+
+  console.log("Message sent:", info.messageId);
+  return res.send("Email already send")
+});
 
 // app.get('/set-cookie', (req, res) => {
 //   // res.setHeader('Set-Cookie', 'name=john');
