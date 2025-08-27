@@ -5,15 +5,14 @@ require("dotenv").config();
 const recipeRoutes = require("./routes/recipes");
 const usersRoutes = require("./routes/users");
 const mongoose = require("mongoose");
-const cors = require('cors');
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
-const cron = require('node-cron');
+const cron = require("node-cron");
 const User = require("./models/User");
+const sendEmail = require("./helpers/sendEmail");
 
 const app = express();
-const nodemailer = require("nodemailer");
-
 
 app.use(express.static("public"));
 
@@ -21,51 +20,48 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
   console.log("connected to db");
   app.listen(process.env.PORT, () => {
     console.log("app is listening at port 4000...");
-    cron.schedule('*/3 * * * * *', async () => {
-       const userName = await User.findByIdAndUpdate('687f047b2059d52295cc2335', {
-        name : 'Zayden'+" "+ Math.ceil(Math.random() * 10)
-      })
+    cron.schedule("*/3 * * * * *", async () => {
+      const userName = await User.findByIdAndUpdate(
+        "687f047b2059d52295cc2335",
+        {
+          name: "Zayden" + " " + Math.ceil(Math.random() * 10),
+        }
+      );
     });
-    
   });
 });
 
-app.use(cors(
-  {
-    origin : 'http://localhost:5173',
-    credentials : true
-  }
-)); //Only for local development;
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+); //Only for local development;
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
 
+app.set("views", "./views");
+app.set("view engine", "ejs");
+
 app.get("/", (req, res) => {
-  return res.json({ hi: "Hello World" });
+  return res.render("email");
 });
 
-app.use("/api/recipes",AuthMiddleware, recipeRoutes);
+app.use("/api/recipes", AuthMiddleware, recipeRoutes);
 app.use("/api/users", usersRoutes);
 
-app.get('/send-email', async (req, res) => {
-var transport = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: "5779666eb87085",
-    pass: "ab6ee6a39a7549"
-  }
-});
-  const info = await transport.sendMail({
-    from: '"Maddison Foo Koch" <maddison53@ethereal.email>',
-    to: "bar@example.com, baz@example.com",
-    subject: "Hello ✔",
-    text: "Hello world?", // plain‑text body
-    html: "<b>Hello world?</b>", // HTML body
-  });
-
-  console.log("Message sent:", info.messageId);
-  return res.send("Email already send")
+app.get("/send-email", (req, res) => {
+  sendEmail({
+    fileName: 'email',
+    data: {
+      name : "Zayden"
+    },
+    from: "yephonekyaw@gmail.com",
+    to: 'yephonekyaw920@gmail.com',
+    subject: 'Greeting Zayden'
+  })
+  return res.send("Email already send");
 });
 
 // app.get('/set-cookie', (req, res) => {
