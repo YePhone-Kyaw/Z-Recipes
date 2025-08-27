@@ -10,10 +10,9 @@ const cookieParser = require("cookie-parser");
 const AuthMiddleware = require("./middlewares/AuthMiddleware");
 const cron = require("node-cron");
 const User = require("./models/User");
-const ejs = require("ejs");
+const sendEmail = require("./helpers/sendEmail");
 
 const app = express();
-const nodemailer = require("nodemailer");
 
 app.use(express.static("public"));
 
@@ -53,7 +52,16 @@ app.use("/api/recipes", AuthMiddleware, recipeRoutes);
 app.use("/api/users", usersRoutes);
 
 app.get("/send-email", (req, res) => {
-  
+  sendEmail({
+    fileName: 'email',
+    data: {
+      name : "Zayden"
+    },
+    from: "yephonekyaw@gmail.com",
+    to: 'yephonekyaw920@gmail.com',
+    subject: 'Greeting Zayden'
+  })
+  return res.send("Email already send");
 });
 
 // app.get('/set-cookie', (req, res) => {

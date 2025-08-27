@@ -1,3 +1,6 @@
+const nodemailer = require("nodemailer");
+const ejs = require('ejs');
+
 const sendEmail = ({ fileName, data, from, to, subject }) => {
     var transport = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
@@ -20,7 +23,8 @@ const sendEmail = ({ fileName, data, from, to, subject }) => {
           });
     
           console.log("Message sent:", info.messageId);
-          return res.send("Email already send");
         }
       );
 }
+
+module.exports = sendEmail;
