@@ -51,17 +51,24 @@ app.get("/", (req, res) => {
 app.use("/api/recipes", AuthMiddleware, recipeRoutes);
 app.use("/api/users", usersRoutes);
 
-app.get("/send-email", (req, res) => {
-  sendEmail({
-    fileName: 'email',
-    data: {
-      name : "Zayden"
-    },
-    from: "yephonekyaw@gmail.com",
-    to: 'yephonekyaw920@gmail.com',
-    subject: 'Greeting Zayden'
-  })
-  return res.send("Email already send");
+app.get("/send-email", async(req, res) => {
+  try {
+    await sendEmail({
+      fileName: 'email',
+      data: {
+        name : "Zayden"
+      },
+      from: "yephonekyaw@gmail.com",
+      to: 'yephonekyaw920@gmail.com',
+      subject: 'Greeting Zayden'
+    })
+    return res.send("Email already send");
+  } catch (error) {
+    return res.status(500).json({
+      message : error.message,
+      status : 500,
+    })
+  }
 });
 
 // app.get('/set-cookie', (req, res) => {

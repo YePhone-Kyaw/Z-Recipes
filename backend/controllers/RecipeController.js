@@ -2,6 +2,8 @@ const { Result } = require("express-validator");
 const Recipe = require("../models/Recipe");
 const mongoose = require("mongoose");
 const removeFile = require("../helpers/removeFile");
+const sendEmail = require("../helpers/sendEmail");
+const User = require("../models/User");
 
 const RecipeController = {
   index: async (req, res) => {
@@ -40,6 +42,7 @@ const RecipeController = {
     }
   },
   store: async (req, res) => {
+   try {
     const { title, description, ingredients } = req.body;
 
     const recipe = await Recipe.create({
@@ -47,7 +50,24 @@ const RecipeController = {
       description,
       ingredients,
     });
+    const users = await User.find(null, ['email']);
+    const userEmail = (users.map(user => user.email));
+    const filteredEmails = userEmail.filter(email => email !== req.user.email);
+
+    await sendEmail({
+      fileName : 'email',
+      data : {
+        name : req.user.name,
+        recipe,
+      },
+      from : req.user.email,
+      to : filteredEmails,
+      subject : `New Recipe called ${recipe.title} has been added to Z-Recipe`,
+    })
     return res.json(recipe);
+   } catch (e) {
+    return res.status(500).json({ message : e.message }) ;
+   }
   },
   show: async (req, res) => {
     try {
