@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
-const ejs = require('ejs');
+const ejs = require("ejs");
 
-const sendEmail = ({ fileName, data, from, to, subject }) => {
+const sendEmail = async ({ fileName, data, from, to, subject }) => {
+  try {
     var transport = nodemailer.createTransport({
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
@@ -11,20 +12,17 @@ const sendEmail = ({ fileName, data, from, to, subject }) => {
         },
       });
     
-      ejs.renderFile(
-        "./views/"+fileName+".ejs",
-        data,
-        async (error, dataString) => {
-          const info = await transport.sendMail({
-            from,
-            to,
-            subject,
-            html: dataString,
-          });
-    
-          console.log("Message sent:", info.messageId);
-        }
-      );
-}
+     const dataString = await ejs.renderFile("./views/" + fileName + ".ejs", data);
+        const info = await transport.sendMail({
+          from,
+          to,
+          subject,
+          html: dataString,
+        });
+        console.log("Message sent:", info.messageId);
+  } catch (error) {
+    throw new Error("Error at sending message.", error);
+  }
+};
 
 module.exports = sendEmail;
