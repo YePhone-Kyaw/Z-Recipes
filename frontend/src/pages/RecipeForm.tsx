@@ -8,6 +8,7 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 export default function RecipeForm() {
   const { id } = useParams();
   const [title, setTitle] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState<string>("");
@@ -41,6 +42,7 @@ export default function RecipeForm() {
   const createRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+      setLoading(true);
       const recipe = {
         title,
         description,
@@ -62,11 +64,15 @@ export default function RecipeForm() {
         const formData = new FormData();
         formData.set("photo", file);
         // Image upload
-        const uploadResponse = await axios.post(`/api/recipes/${res.data._id}/upload`, formData, {
-          headers : {
-            Accept : "multipart/form-data"
+        const uploadResponse = await axios.post(
+          `/api/recipes/${res.data._id}/upload`,
+          formData,
+          {
+            headers: {
+              Accept: "multipart/form-data",
+            },
           }
-        });
+        );
         console.log(uploadResponse);
       }
 
@@ -77,6 +83,7 @@ export default function RecipeForm() {
           toast.success("Recipe created successfully!");
         }
         setTimeout(() => {
+          setLoading(false);
           navigate("/");
         }, 2000);
       }
@@ -92,7 +99,7 @@ export default function RecipeForm() {
   const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     setFile(file);
 
     const fileReader = new FileReader();
@@ -100,10 +107,10 @@ export default function RecipeForm() {
     fileReader.onload = (e) => {
       const result = e.target?.result as string;
       setPreview(result);
-    }
+    };
 
     fileReader.readAsDataURL(file);
-  }
+  };
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-amber-50 to-lime-100 min-h-screen">
@@ -190,10 +197,14 @@ export default function RecipeForm() {
             />
           </div>
           <div className="flex flex-col gap-2 mt-5">
-            <h4 className="font-semibold text-sm text-gray-700 mb-1">Ingredients</h4>
+            <h4 className="font-semibold text-sm text-gray-700 mb-1">
+              Ingredients
+            </h4>
             <Ingredients
               ingredients={ingredients}
-              onRemove={(idx: number) => setIngredients(ingredients.filter((_, i) => i !== idx))}
+              onRemove={(idx: number) =>
+                setIngredients(ingredients.filter((_, i) => i !== idx))
+              }
             />
           </div>
         </div>
@@ -217,6 +228,48 @@ export default function RecipeForm() {
           >
             Cancel
           </button>
+          {loading && (
+            <div className="flex items-center justify-center">
+              <div className="bg-white rounded-lg p-3 shadow-lg border border-amber-200 flex items-center gap-3">
+                {/* Simple spinning cooking pot */}
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 80 80"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="animate-spin"
+                >
+                  <rect
+                    x="20"
+                    y="35"
+                    width="40"
+                    height="30"
+                    rx="5"
+                    fill="#F59E0B"
+                    stroke="#D97706"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M15 40 Q10 40 10 45 Q10 50 15 50"
+                    fill="none"
+                    stroke="#D97706"
+                    strokeWidth="3"
+                  />
+                  <path
+                    d="M65 40 Q70 40 70 45 Q70 50 65 50"
+                    fill="none"
+                    stroke="#D97706"
+                    strokeWidth="3"
+                  />
+                  <ellipse cx="40" cy="35" rx="22" ry="8" fill="#92400E" />
+                  <circle cx="40" cy="30" r="3" fill="#78350F" />
+                </svg>
+                <span className="text-amber-600 font-medium text-sm">
+                  {id ? "Updating..." : "Creating..."}
+                </span>
+              </div>
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-amber-500 hover:bg-lime-500 text-white font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg"
