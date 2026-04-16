@@ -48,8 +48,7 @@ export default function NavBar() {
           Z-Recipes
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1">
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.to}>
@@ -73,9 +72,8 @@ export default function NavBar() {
           )}
         </div>
 
-        {/* Hamburger */}
         <button
-          className="md:hidden flex flex-col justify-center items-center gap-1.5 p-2 rounded hover:bg-gray-800 transition-colors"
+          className="lg:hidden flex flex-col justify-center items-center gap-1.5 p-2 rounded hover:bg-gray-800 transition-colors"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-label="Toggle menu"
         >
@@ -85,7 +83,6 @@ export default function NavBar() {
         </button>
       </div>
 
-      {/* Backdrop */}
       {menuOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/40 z-40"
@@ -93,9 +90,8 @@ export default function NavBar() {
         />
       )}
 
-      {/* Mobile dropdown */}
       <ul
-        className={`absolute md:hidden left-0 right-0 top-full bg-gray-900/98 z-50 px-4 transition-all duration-300 ease-in-out
+        className={`absolute lg:hidden left-0 right-0 top-full bg-gray-900/98 z-50 px-4 transition-all duration-300 ease-in-out
           ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto pb-4" : "opacity-0 -translate-y-2 pointer-events-none"}`}
       >
         {user && (

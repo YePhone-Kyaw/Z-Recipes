@@ -29,7 +29,8 @@ export default function Home() {
   const fetchFavouriteIds = useCallback(async () => {
     const response = await axios.get("/api/users/favourites");
     if (response.status === 200) {
-      setFavouriteIds(response.data.map((r: Recipe) => r._id));
+      const recipes = response.data;
+      setFavouriteIds(recipes.map((recipe: Recipe) => recipe._id));
     }
   }, []);
 

@@ -44,7 +44,6 @@ export default function RecipeCard({
         transition={Bounce}
       />
 
-      {/* Image */}
       <div className="relative h-52 bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden flex-shrink-0">
         {recipe.photo ? (
           <img
@@ -83,7 +82,6 @@ export default function RecipeCard({
         )}
       </div>
 
-      {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <h2 className="text-lg font-bold text-gray-800 mb-1 leading-tight line-clamp-1">
           {recipe.title}
@@ -99,7 +97,6 @@ export default function RecipeCard({
           <Ingredients ingredients={recipe.ingredients} />
         </div>
 
-        {/* Footer */}
         <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
           <span className="text-xs text-gray-400 flex items-center gap-1">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

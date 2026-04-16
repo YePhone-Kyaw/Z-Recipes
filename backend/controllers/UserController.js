@@ -41,17 +41,17 @@ const UserController = {
   },
   getFavourites: async (req, res) => {
     try {
-      const user = await User.findById(req.user._id).populate('favourites');
+      const user = await User.findById(req.user._id).populate("favourites");
       return res.json(user.favourites);
     } catch (e) {
-      return res.status(500).json({ message: e.message });
+      return res.status(500).json({ message: e.message })
     }
   },
   toggleFavourite: async (req, res) => {
     try {
       const { recipeId } = req.params;
       const user = await User.findById(req.user._id);
-      const idx = user.favourites.findIndex(id => id.toString() === recipeId);
+      const idx = user.favourites.findIndex((id) => id.toString() === recipeId);
       if (idx === -1) {
         user.favourites.push(recipeId);
       } else {
