@@ -58,10 +58,8 @@ export default function RecipeCard({
           </div>
         )}
 
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
-        {/* Heart button */}
         {onFavouriteToggle && (
           <button
             onClick={() => onFavouriteToggle(recipe._id)}
@@ -94,7 +92,6 @@ export default function RecipeCard({
           {recipe.description}
         </p>
 
-        {/* Ingredients */}
         <div className="mb-4">
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
             Ingredients

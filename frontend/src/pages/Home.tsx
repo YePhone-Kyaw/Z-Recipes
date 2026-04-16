@@ -56,7 +56,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-lime-50">
-      {/* Hero banner */}
       <div className="bg-gradient-to-r from-amber-500 to-orange-400 py-10 px-6 text-center shadow-md">
         <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow mb-2 tracking-tight">
           🍊 Discover Delicious Recipes
