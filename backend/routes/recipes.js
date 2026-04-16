@@ -12,7 +12,7 @@ router.get('', RecipeController.index);
 router.post('', [
     body('title').notEmpty(),
     body('description').notEmpty(),
-    body('ingredients').notEmpty().isArray({min : 3})
+    body('ingredients').notEmpty().isArray({min : 1})
 ], handleErrorMessage, RecipeController.store)
 
 // Add an image 

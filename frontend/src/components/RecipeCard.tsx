@@ -2,6 +2,7 @@ import axios from "../helpers/axios";
 import Ingredients from "./Ingredients";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
+import type RecipeCardProps from "../types/RecipeCardProps";
 
 export type Recipe = {
   _id: string;
@@ -15,22 +16,20 @@ export type Recipe = {
 export default function RecipeCard({
   recipe,
   onDeleted,
-}: {
-  recipe: Recipe;
-  onDeleted: (id: string) => void;
-}) {
+  showActions = false,
+  isFavourited = false,
+  onFavouriteToggle,
+}: RecipeCardProps) {
   const handleDelete = async () => {
     const res = await axios.delete("/api/recipes/" + recipe._id);
     if (res.status === 200) {
       toast.success("Recipe was successfully deleted!");
-      onDeleted(recipe._id);
+      onDeleted?.(recipe._id);
     }
   };
+
   return (
-    <div
-      key={recipe._id}
-      className="bg-white rounded-xl shadow-lg p-6 flex flex-col hover:shadow-2xl transition-shadow duration-200 border border-amber-100"
-    >
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-orange-100 flex flex-col group">
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -44,73 +43,98 @@ export default function RecipeCard({
         theme="colored"
         transition={Bounce}
       />
-      {recipe.photo ? (
-        <img
-          className="mx-auto h-52 object-contain"
-          src={import.meta.env.VITE_BACKEND_URL + recipe.photo}
-          alt={recipe.title}
-        />
-      ) : (
-        <div className="mx-auto h-52 w-full bg-gray-200 rounded-lg flex items-center justify-center">
-          <span className="text-gray-400 text-4xl">🍽️</span>
-        </div>
-      )}
-      <h2 className="text-xl font-bold text-amber-600 mb-2 flex items-center gap-2">
-        <span role="img" aria-label="orange">
-          🍊
-        </span>{" "}
-        {recipe.title}
-      </h2>
-      <p className="text-gray-700 mb-3">{recipe.description}</p>
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <span className="block text-sm font-semibold text-gray-500 mb-1">
-          Ingredients:
-        </span>
-        <Ingredients ingredients={recipe.ingredients} />
-      </div>
-      <div className="mt-auto text-xs text-gray-400 pt-2 border-t border-amber-50 flex items-center justify-between">
-        <span>Posted: {recipe.createdAt}</span>
-        <div className="flex gap-2">
-          <Link
-            to={`/recipes/edit/${recipe._id}`}
-            className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-600 border border-amber-300 rounded-full shadow hover:bg-amber-200 hover:text-amber-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
-            title="Edit Recipe"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13z"
-              />
-            </svg>
-            Edit
-          </Link>
+
+      {/* Image */}
+      <div className="relative h-52 bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden flex-shrink-0">
+        {recipe.photo ? (
+          <img
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            src={import.meta.env.VITE_BACKEND_URL + recipe.photo}
+            alt={recipe.title}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-7xl drop-shadow-sm">🍽️</span>
+          </div>
+        )}
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+
+        {/* Heart button */}
+        {onFavouriteToggle && (
           <button
-            onClick={handleDelete}
-            className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-600 border border-amber-300 rounded-full shadow hover:bg-amber-200 hover:text-amber-700 transition-all duration-200 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
-            title="Delete Recipe"
+            onClick={() => onFavouriteToggle(recipe._id)}
+            className="absolute top-3 right-3 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white hover:scale-110 transition-all duration-200"
+            title={isFavourited ? "Remove from favourites" : "Add to favourites"}
           >
             <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
+              className="w-5 h-5 transition-colors duration-200"
+              fill={isFavourited ? "#ef4444" : "none"}
+              stroke={isFavourited ? "#ef4444" : "#9ca3af"}
               viewBox="0 0 24 24"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               />
             </svg>
-            Delete
           </button>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-5 flex flex-col flex-1">
+        <h2 className="text-lg font-bold text-gray-800 mb-1 leading-tight line-clamp-1">
+          {recipe.title}
+        </h2>
+        <p className="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">
+          {recipe.description}
+        </p>
+
+        {/* Ingredients */}
+        <div className="mb-4">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+            Ingredients
+          </p>
+          <Ingredients ingredients={recipe.ingredients} />
+        </div>
+
+        {/* Footer */}
+        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
+          <span className="text-xs text-gray-400 flex items-center gap-1">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {recipe.createdAt.split("T")[0]}
+          </span>
+
+          {showActions && (
+            <div className="flex gap-2">
+              <Link
+                to={`/recipes/edit/${recipe._id}`}
+                className="flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-600 border border-amber-200 rounded-full hover:bg-amber-100 hover:border-amber-300 transition-all duration-200 font-semibold text-xs"
+                title="Edit Recipe"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13z" />
+                </svg>
+                Edit
+              </Link>
+              <button
+                onClick={handleDelete}
+                className="flex items-center gap-1 px-3 py-1 bg-red-50 text-red-500 border border-red-200 rounded-full hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-semibold text-xs"
+                title="Delete Recipe"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

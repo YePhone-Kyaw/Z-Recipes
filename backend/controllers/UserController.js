@@ -38,6 +38,30 @@ const UserController = {
   logout: async (req, res) => {
     res.cookie('jwt', '', { maxAge : 1 });
     return res.json({ message : 'User logged out!' })
+  },
+  getFavourites: async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id).populate('favourites');
+      return res.json(user.favourites);
+    } catch (e) {
+      return res.status(500).json({ message: e.message });
+    }
+  },
+  toggleFavourite: async (req, res) => {
+    try {
+      const { recipeId } = req.params;
+      const user = await User.findById(req.user._id);
+      const idx = user.favourites.findIndex(id => id.toString() === recipeId);
+      if (idx === -1) {
+        user.favourites.push(recipeId);
+      } else {
+        user.favourites.splice(idx, 1);
+      }
+      await user.save();
+      return res.json({ favourites: user.favourites });
+    } catch (e) {
+      return res.status(500).json({ message: e.message });
+    }
   }
 };
 

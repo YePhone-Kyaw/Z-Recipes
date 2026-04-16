@@ -16,7 +16,11 @@ const UserSchema = new Schema({
     password : {
         type : String,
         required : true,
-    }
+    },
+    favourites : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Recipe',
+    }]
 });
 
 // creating a custom register method for api

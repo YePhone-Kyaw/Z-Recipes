@@ -7,6 +7,8 @@ const AuthMiddleware = require('../middlewares/AuthMiddleware');
 const router = express.Router();
 
 router.get('/me', AuthMiddleware, UserController.me);
+router.get('/favourites', AuthMiddleware, UserController.getFavourites);
+router.post('/favourites/:recipeId', AuthMiddleware, UserController.toggleFavourite);
 router.post('/login', UserController.login);
 router.post('/logout', UserController.logout);
 

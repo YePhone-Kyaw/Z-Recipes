@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import plus from "../assets/plus.svg";
 import Ingredients from "../components/Ingredients";
 import axios from "../helpers/axios";
@@ -15,6 +15,7 @@ export default function RecipeForm() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string[]>([]);
+  const abortController = useRef<AbortController | null>(null);
   const navigate = useNavigate();
 
   const fetchRecipes = useCallback(async () => {
@@ -43,6 +44,9 @@ export default function RecipeForm() {
     try {
       e.preventDefault();
       setLoading(true);
+      const controller = new AbortController();
+      abortController.current = controller;
+
       const recipe = {
         title,
         description,
@@ -53,10 +57,10 @@ export default function RecipeForm() {
       let res;
       if (id) {
         // Update api
-        res = await axios.patch("/api/recipes/" + id, recipe);
+        res = await axios.patch("/api/recipes/" + id, recipe, { signal: controller.signal });
       } else {
         // Create api
-        res = await axios.post("/api/recipes", recipe);
+        res = await axios.post("/api/recipes", recipe, { signal: controller.signal });
       }
 
       // File send to backend
@@ -68,6 +72,7 @@ export default function RecipeForm() {
           `/api/recipes/${res.data._id}/upload`,
           formData,
           {
+            signal: controller.signal,
             headers: {
               Accept: "multipart/form-data",
             },
@@ -88,6 +93,8 @@ export default function RecipeForm() {
         }, 2000);
       }
     } catch (e) {
+      if (axios.isCancel(e)) return;
+      setLoading(false);
       if (axios.isAxiosError(e)) {
         setError(Object.keys(e.response?.data.errors));
       } else {
@@ -223,59 +230,60 @@ export default function RecipeForm() {
         <div className="flex gap-5 items-center">
           <button
             type="button"
-            onClick={() => navigate("/")}
+            onClick={() => {
+              abortController.current?.abort();
+              navigate("/");
+            }}
             className="w-full bg-white border border-amber-300 text-amber-500 hover:bg-amber-50 font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg mt-2"
           >
             Cancel
           </button>
-          {loading && (
-            <div className="flex items-center justify-center">
-              <div className="bg-white rounded-lg p-3 shadow-lg border border-amber-200 flex items-center gap-3">
-                {/* Simple spinning cooking pot */}
-                <svg
+          {loading ? (
+            <div className="w-full flex items-center justify-center bg-amber-50 border border-amber-200 rounded-lg py-2 shadow">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 80 80"
+                xmlns="http://www.w3.org/2000/svg"
+                className="animate-spin mr-2"
+              >
+                <rect
+                  x="20"
+                  y="35"
                   width="40"
-                  height="40"
-                  viewBox="0 0 80 80"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="animate-spin"
-                >
-                  <rect
-                    x="20"
-                    y="35"
-                    width="40"
-                    height="30"
-                    rx="5"
-                    fill="#F59E0B"
-                    stroke="#D97706"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M15 40 Q10 40 10 45 Q10 50 15 50"
-                    fill="none"
-                    stroke="#D97706"
-                    strokeWidth="3"
-                  />
-                  <path
-                    d="M65 40 Q70 40 70 45 Q70 50 65 50"
-                    fill="none"
-                    stroke="#D97706"
-                    strokeWidth="3"
-                  />
-                  <ellipse cx="40" cy="35" rx="22" ry="8" fill="#92400E" />
-                  <circle cx="40" cy="30" r="3" fill="#78350F" />
-                </svg>
-                <span className="text-amber-600 font-medium text-sm">
-                  {id ? "Updating..." : "Creating..."}
-                </span>
-              </div>
+                  height="30"
+                  rx="5"
+                  fill="#F59E0B"
+                  stroke="#D97706"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M15 40 Q10 40 10 45 Q10 50 15 50"
+                  fill="none"
+                  stroke="#D97706"
+                  strokeWidth="3"
+                />
+                <path
+                  d="M65 40 Q70 40 70 45 Q70 50 65 50"
+                  fill="none"
+                  stroke="#D97706"
+                  strokeWidth="3"
+                />
+                <ellipse cx="40" cy="35" rx="22" ry="8" fill="#92400E" />
+                <circle cx="40" cy="30" r="3" fill="#78350F" />
+              </svg>
+              <span className="text-amber-600 font-medium text-sm">
+                {id ? "Updating..." : "Creating..."}
+              </span>
             </div>
+          ) : (
+            <button
+              type="submit"
+              className="w-full bg-amber-500 hover:bg-lime-500 text-white font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg"
+            >
+              {id ? "Update Recipe" : "Submit Recipe"}
+            </button>
           )}
-          <button
-            type="submit"
-            className="w-full bg-amber-500 hover:bg-lime-500 text-white font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg"
-          >
-            {id ? "Update Recipe" : "Submit Recipe"}
-          </button>
         </div>
       </form>
     </div>

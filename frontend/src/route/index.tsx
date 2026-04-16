@@ -1,12 +1,13 @@
 import App from "../App";
 import Home from "../pages/Home";
 import About from "../pages/About";
-import Contact from "../pages/Contact";
 import RecipeForm from "../pages/RecipeForm";
 import SignUpForm from "../pages/SignUpForm";
 import LoginForm from "../pages/LoginForm";
 import { createBrowserRouter, RouterProvider, Navigate} from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import Favourites from "../pages/Favourites";
+import Profile from "../pages/Profile";
 
 
 function Index() {
@@ -27,8 +28,12 @@ function Index() {
           element: user ? <About /> : <Navigate to={'/login'} />,
         },
         {
-          path: "/contact",
-          element: user ? <Contact /> : <Navigate to={'/login'} />,
+          path: "/favourites",
+          element: user ? <Favourites /> : <Navigate to={'/login'} />,
+        },
+        {
+          path: "/profile",
+          element: user ? <Profile /> : <Navigate to={'/login'} />,
         },
         {
           path: "/recipes/create",
