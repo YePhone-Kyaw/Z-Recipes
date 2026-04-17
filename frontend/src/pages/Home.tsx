@@ -21,7 +21,7 @@ export default function Home() {
     if (response.status == 200) {
       const data = await response.data;
       setLinks(data.links);
-      setRecipes(data.data ?? []);
+      setRecipes(data.data);
       window.scroll({ top: 0, left: 0, behavior: "smooth" });
     }
   }, [page]);
