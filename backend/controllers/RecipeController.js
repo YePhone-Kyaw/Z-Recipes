@@ -11,6 +11,7 @@ const RecipeController = {
     const page = Math.max(1, req.query.page || 1);
     try {
       const recipes = await Recipe.find()
+        .populate('author', 'name')
         .skip((page - 1) * limit)
         .limit(limit)
         .sort({ createdAt: -1 });
@@ -49,6 +50,7 @@ const RecipeController = {
       title,
       description,
       ingredients,
+      author: req.user._id,
     });
     const users = await User.find(null, ['email']);
     const userEmail = (users.map(user => user.email));
@@ -62,7 +64,7 @@ const RecipeController = {
       },
       from : req.user.email,
       to : filteredEmails,
-      subject : `New Recipe called ${recipe.title} has been added to Z-Recipe`,
+      subject : `New Recipe called ${recipe.title} has been added to Z-Recipes`,
     })
     return res.json(recipe);
    } catch (e) {
@@ -143,6 +145,15 @@ const RecipeController = {
       return res.json(recipe);
     } catch (e) {
       return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  myRecipies: async (req, res) => {
+    try {
+      const recipes = await Recipe.find({ author: req.user._id }).populate('author', 'name').sort({ createdAt: -1 });
+      return res.json(recipes);
+    } catch (e) {
+      return res.status(500).json({ message: e.message });
     }
   }
 };

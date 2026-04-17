@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import type { Recipe } from "../components/RecipeCard";
 import RecipeCard from "../components/RecipeCard";
 import Pagination from "../components/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../helpers/axios";
+import type { Recipe } from "../types/Recipe";
 
 export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -51,7 +51,7 @@ export default function Home() {
   const onFavouriteToggle = async (id: string) => {
     const response = await axios.post(`/api/users/favourites/${id}`);
     if (response.status === 200) {
-      setFavouriteIds(response.data.favourites);
+      setFavouriteIds(response.data.favourites.map((id: { toString(): string } | string) => id.toString()));
     }
   };
 

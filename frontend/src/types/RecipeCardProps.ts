@@ -1,4 +1,4 @@
-import type { Recipe } from "../components/RecipeCard";
+import type { Recipe } from "./Recipe";
 
 interface RecipeCardProps {
   recipe: Recipe;

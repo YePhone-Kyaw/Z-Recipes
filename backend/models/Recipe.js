@@ -17,6 +17,10 @@ const RecipeSchema = new Schema({
     ingredients : {
         type : Array,
         required : true,
+    },
+    author : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
 }, {timestamps : true});
 

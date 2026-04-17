@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import RecipeCard from "../components/RecipeCard";
-import type { Recipe } from "../components/RecipeCard";
 import axios from "../helpers/axios";
+import type { Recipe } from "../types/Recipe";
 
 export default function Favourites() {
   const [favourites, setFavourites] = useState<Recipe[]>([]);

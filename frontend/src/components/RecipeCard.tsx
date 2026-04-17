@@ -4,15 +4,6 @@ import { Bounce, toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import type RecipeCardProps from "../types/RecipeCardProps";
 
-export type Recipe = {
-  _id: string;
-  title: string;
-  photo: string;
-  description: string;
-  ingredients: string[];
-  createdAt: string;
-};
-
 export default function RecipeCard({
   recipe,
   onDeleted,
@@ -82,7 +73,7 @@ export default function RecipeCard({
         )}
       </div>
 
-      <div className="p-5 flex flex-col flex-1">
+      <div className="p-5 flex flex-col">
         <h2 className="text-lg font-bold text-gray-800 mb-1 leading-tight line-clamp-1">
           {recipe.title}
         </h2>
@@ -97,16 +88,26 @@ export default function RecipeCard({
           <Ingredients ingredients={recipe.ingredients} />
         </div>
 
-        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-          <span className="text-xs text-gray-400 flex items-center gap-1">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            {recipe.createdAt.split("T")[0]}
-          </span>
+        <div className="mt-auto pt-3 border-t border-gray-100">
+          <div className="flex w-full justify-between">
+            <span className="text-xs text-gray-400 flex items-center gap-1">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {recipe.createdAt.split("T")[0]}
+            </span>
+            {recipe.author?.name && (
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                {recipe.author.name}
+              </span>
+            )}
+          </div>
 
           {showActions && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-5">
               <Link
                 to={`/recipes/edit/${recipe._id}`}
                 className="flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-600 border border-amber-200 rounded-full hover:bg-amber-100 hover:border-amber-300 transition-all duration-200 font-semibold text-xs"

@@ -4,12 +4,13 @@ const router = express.Router();
 const { body } = require('express-validator');
 const handleErrorMessage = require('../middlewares/handleErrorMessage');
 const upload = require('../helpers/upload');
+const AuthMiddleware = require('../middlewares/AuthMiddleware');
  
 // Get all recipes
 router.get('', RecipeController.index);
 
 //add single recipe
-router.post('', [
+router.post('', AuthMiddleware, [
     body('title').notEmpty(),
     body('description').notEmpty(),
     body('ingredients').notEmpty().isArray({min : 1})
@@ -19,7 +20,6 @@ router.post('', [
 router.post('/:id/upload', [ 
     upload.single("photo"),
     body("photo").custom((value, { req }) => {
-        console.log(req.file);
         if (!req.file) {
             throw new Error("Photo is required!");
         }
@@ -30,8 +30,12 @@ router.post('/:id/upload', [
     }),
  ], handleErrorMessage, RecipeController.upload);
 
+ // Get own created recipes
+ router.get('/myRecipes', AuthMiddleware, RecipeController.myRecipies)
+
 // Get single recipe
 router.get('/:id', RecipeController.show)
+
 
 // Delete single recipe
 router.delete('/:id', RecipeController.destroy)
