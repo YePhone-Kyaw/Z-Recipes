@@ -29,7 +29,6 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-lime-50">
-      {/* Header */}
       <div className="bg-gradient-to-r from-amber-500 to-orange-400 py-10 px-6 text-center shadow-md">
         <div className="text-5xl mb-3">👨‍🍳</div>
         <h1 className="text-3xl font-extrabold text-white drop-shadow mb-1">

@@ -56,13 +56,18 @@ app.get("/send-email", async(req, res) => {
     await sendEmail({
       fileName: 'email',
       data: {
-        name : "Zayden"
+        name: "Zayden",
+        recipe: {
+          title: "Strawberry Cake",
+          description: "A delicious homemade strawberry cake.",
+          ingredients: ["Flour", "Eggs", "Strawberries", "Sugar", "Butter"],
+        }
       },
       from: "yephonekyaw@gmail.com",
       to: 'yephonekyaw920@gmail.com',
       subject: 'Greeting Zayden'
     })
-    return res.send("Email already send");
+    return res.send("Email already sent");
   } catch (error) {
     return res.status(500).json({
       message : error.message,

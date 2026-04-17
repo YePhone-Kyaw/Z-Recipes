@@ -39,8 +39,8 @@ export default function RecipeCard({
         {recipe.photo ? (
           <img
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            src={import.meta.env.VITE_BACKEND_URL + recipe.photo}
-            alt={recipe.title}
+            src={import.meta.env.VITE_BACKEND_ASSET_URL + recipe.photo}
+            alt={recipe.title} 
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

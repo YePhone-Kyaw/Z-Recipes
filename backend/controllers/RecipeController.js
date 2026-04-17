@@ -1,9 +1,8 @@
-const { Result } = require("express-validator");
 const Recipe = require("../models/Recipe");
 const mongoose = require("mongoose");
 const removeFile = require("../helpers/removeFile");
-const sendEmail = require("../helpers/sendEmail");
 const User = require("../models/User");
+const emailQueue = require("../queue/emailQueue");
 
 const RecipeController = {
   index: async (req, res) => {
@@ -52,11 +51,12 @@ const RecipeController = {
       ingredients,
       author: req.user._id,
     });
+
+    // email queue
     const users = await User.find(null, ['email']);
     const userEmail = (users.map(user => user.email));
     const filteredEmails = userEmail.filter(email => email !== req.user.email);
-
-    await sendEmail({
+    emailQueue.add({
       fileName : 'email',
       data : {
         name : req.user.name,
@@ -158,4 +158,4 @@ const RecipeController = {
   }
 };
 
-module.exports = RecipeController;
+module.exports = RecipeController;  
