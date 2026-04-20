@@ -7,6 +7,10 @@ export default function Favourites() {
   const [favourites, setFavourites] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    document.title = "Z Recipes | Favourites"
+  }, []);
+
   const fetchFavourites = useCallback(async () => {
     const response = await axios.get("/api/users/favourites");
     if (response.status === 200) {
@@ -25,7 +29,7 @@ export default function Favourites() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-lime-50">
+    <div className="min-h-screen bg-theme">
       <div className="bg-gradient-to-r from-rose-400 to-pink-400 py-10 px-6 text-center shadow-md">
         <div className="text-5xl mb-3">❤️</div>
         <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow mb-2 tracking-tight">
@@ -44,8 +48,8 @@ export default function Favourites() {
         ) : favourites.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <span className="text-7xl mb-5">🫶</span>
-            <h2 className="text-xl font-bold text-gray-500 mb-2">No favourites yet</h2>
-            <p className="text-gray-400 text-sm mb-6">
+            <h2 className="text-xl font-bold text-theme-muted mb-2">No favourites yet</h2>
+            <p className="text-theme-muted text-sm mb-6">
               Tap the ❤️ on any recipe from the home page to save it here.
             </p>
             <a

@@ -1,24 +1,10 @@
 import axios from "axios";
 import { createContext, useEffect, useReducer, type ReactNode } from "react";
-
-type User = {
-  name: string;
-};
-
-type AuthContextType = {
-  user: User | null;
-  login: (user: User) => void;
-  logout: () => void;
-};
-
-type AuthState = {
-  user: User | null;
-};
+import type { User, AuthContextType, AuthState } from "../types/UserAuth";
 
 type AuthAction = { type: "LOGIN"; payload: User } | { type: "LOGOUT" };
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 //action = {type, payload}
 const AuthReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
@@ -37,7 +23,6 @@ const AuthReducer = (state: AuthState, action: AuthAction) => {
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(AuthReducer, { user: null });
-
   const login = (user: User) => dispatch({ type: "LOGIN", payload: user });
   const logout = () => dispatch({ type: "LOGOUT" });
 

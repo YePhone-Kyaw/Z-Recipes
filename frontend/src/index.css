@@ -1,8 +1,92 @@
 @import "tailwindcss";
 
-body {
-  @apply bg-gradient-to-br from-amber-50 to-lime-100;
+/* ── Light theme ─────────────────────────────────────────── */
+:root,
+.light {
+  --color-bg:            #fffbeb;
+  --color-bg-alt:        #fff7ed;
+  --color-surface:       #ffffff;
+  --color-surface-2:     #f9fafb;
+  --color-border:        #fde68a;
+  --color-border-subtle: #e5e7eb;
+
+  --color-text-primary:  #111827;
+  --color-text-secondary:#374151;
+  --color-text-muted:    #6b7280;
+  --color-text-placeholder: #d97706;
+
+  --color-input-bg:      #fffbeb;
+  --color-input-border:  #fde68a;
+
+  --color-nav-bg:         #ffffff;
+  --color-nav-border:     #e5e7eb;
+  --color-nav-text:       #374151;
+  --color-nav-link-hover: #fef3c7;
+  --color-nav-divider:    #e5e7eb;
+  --color-nav-bar:        #374151;
 }
+
+/* ── Dark theme ──────────────────────────────────────────── */
+.dark {
+  --color-bg:            #030712;
+  --color-bg-alt:        #0f172a;
+  --color-surface:       #1f2937;
+  --color-surface-2:     #111827;
+  --color-border:        #374151;
+  --color-border-subtle: #374151;
+
+  --color-text-primary:  #f9fafb;
+  --color-text-secondary:#d1d5db;
+  --color-text-muted:    #9ca3af;
+  --color-text-placeholder: #6b7280;
+
+  --color-input-bg:      #374151;
+  --color-input-border:  #4b5563;
+
+  --color-nav-bg:         #030712;
+  --color-nav-border:     #374151;
+  --color-nav-text:       #e5e7eb;
+  --color-nav-link-hover: #1f2937;
+  --color-nav-divider:    #374151;
+  --color-nav-bar:        #f3f4f6;
+}
+
+/* ── Apply to root ───────────────────────────────────────── */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ── Theme utility classes ───────────────────────────────── */
+.bg-theme          { background-color: var(--color-bg); }
+.bg-theme-alt      { background-color: var(--color-bg-alt); }
+.bg-theme-surface  { background-color: var(--color-surface); }
+.bg-theme-surface2 { background-color: var(--color-surface-2); }
+.bg-theme-input    { background-color: var(--color-input-bg); }
+.bg-nav            { background-color: var(--color-nav-bg); }
+
+.text-theme-primary   { color: var(--color-text-primary); }
+.text-theme-secondary { color: var(--color-text-secondary); }
+.text-theme-muted     { color: var(--color-text-muted); }
+.text-nav             { color: var(--color-nav-text); }
+
+.border-theme        { border-color: var(--color-border); }
+.border-theme-subtle { border-color: var(--color-border-subtle); }
+.border-theme-input  { border-color: var(--color-input-border); }
+.border-nav          { border-color: var(--color-nav-border); }
+
+.hover-nav:hover   { background-color: var(--color-nav-link-hover); }
+.divider-nav       { border-color: var(--color-nav-divider); }
+.bar-nav           { background-color: var(--color-nav-bar); }
+
+.input-theme {
+  background-color: var(--color-input-bg);
+  border-color: var(--color-input-border);
+  color: var(--color-text-primary);
+}
+.input-theme::placeholder { color: var(--color-text-placeholder); }
+.input-theme:focus        { outline: none; box-shadow: 0 0 0 2px #f59e0b; }
 
 #root > div {
   margin-left: auto;

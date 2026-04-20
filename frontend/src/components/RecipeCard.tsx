@@ -20,7 +20,7 @@ export default function RecipeCard({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-orange-100 flex flex-col group">
+    <div className="bg-theme-surface rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-theme flex flex-col group">
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -35,7 +35,7 @@ export default function RecipeCard({
         transition={Bounce}
       />
 
-      <div className="relative h-52 bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden flex-shrink-0">
+      <div className="relative h-52 bg-gradient-to-br from-amber-50 to-orange-100 dark:from-gray-700 dark:to-gray-800 overflow-hidden flex-shrink-0">
         {recipe.photo ? (
           <img
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -74,21 +74,21 @@ export default function RecipeCard({
       </div>
 
       <div className="p-5 flex flex-col">
-        <h2 className="text-lg font-bold text-gray-800 mb-1 leading-tight line-clamp-1">
+        <h2 className="text-lg font-bold text-theme-primary mb-1 leading-tight line-clamp-1">
           {recipe.title}
         </h2>
-        <p className="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-theme-muted text-sm mb-4 line-clamp-2 leading-relaxed">
           {recipe.description}
         </p>
 
         <div className="mb-4">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+          <p className="text-xs font-semibold text-theme-muted uppercase tracking-wider mb-2">
             Ingredients
           </p>
           <Ingredients ingredients={recipe.ingredients} />
         </div>
 
-        <div className="mt-auto pt-3 border-t border-gray-100">
+        <div className="mt-auto pt-3 border-t border-theme-subtle">
           <div className="flex w-full justify-between">
             <span className="text-xs text-gray-400 flex items-center gap-1">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,7 +110,7 @@ export default function RecipeCard({
             <div className="flex gap-2 mt-5">
               <Link
                 to={`/recipes/edit/${recipe._id}`}
-                className="flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-600 border border-amber-200 rounded-full hover:bg-amber-100 hover:border-amber-300 transition-all duration-200 font-semibold text-xs"
+                className="flex items-center gap-1 px-3 py-1 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-700 rounded-full hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-all duration-200 font-semibold text-xs"
                 title="Edit Recipe"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,7 +120,7 @@ export default function RecipeCard({
               </Link>
               <button
                 onClick={handleDelete}
-                className="flex items-center gap-1 px-3 py-1 bg-red-50 text-red-500 border border-red-200 rounded-full hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-semibold text-xs"
+                className="flex items-center gap-1 px-3 py-1 bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 border border-red-200 dark:border-red-700 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 font-semibold text-xs"
                 title="Delete Recipe"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

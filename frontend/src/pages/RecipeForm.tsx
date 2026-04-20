@@ -18,6 +18,10 @@ export default function RecipeForm() {
   const abortController = useRef<AbortController | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = id ? "Z Recipes | Edit Recipes" : "Z Recipes | Create Recipes"
+  }, [id]);
+
   const fetchRecipes = useCallback(async () => {
     if (id) {
       const response = await axios.get("/api/recipes/" + id);
@@ -120,7 +124,7 @@ export default function RecipeForm() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-amber-50 to-lime-100 min-h-screen">
+    <div className="flex items-center justify-center bg-theme min-h-screen">
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -135,7 +139,7 @@ export default function RecipeForm() {
         transition={Bounce}
       />
       <form
-        className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-lg border border-amber-100 my-10"
+        className="bg-theme-surface rounded-2xl shadow-xl p-8 w-full max-w-lg border border-theme my-10"
         onSubmit={createRecipe}
       >
         <h2 className="text-2xl font-bold text-amber-600 mb-6 text-center flex items-center gap-2 justify-center">
@@ -145,7 +149,7 @@ export default function RecipeForm() {
           {id ? "Edit Your Recipe" : "Add a New Recipe"}
         </h2>
         {!!error.length && (
-          <div className="mb-6 bg-amber-100 border border-amber-300 text-amber-700 rounded-lg px-4 py-3">
+          <div className="mb-6 bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 rounded-lg px-4 py-3">
             <ul className="list-disc list-inside">
               {error.map((err, i) => (
                 <li key={i}>{err} is invalid.</li>
@@ -154,32 +158,32 @@ export default function RecipeForm() {
           </div>
         )}
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
+          <label className="block text-sm font-semibold mb-1 text-theme-secondary">
             Title
           </label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             type="text"
-            className="w-full px-4 py-2 border border-amber-200 rounded focus:outline-none focus:ring-2 focus:ring-amber-300"
+            className="input-theme w-full px-4 py-2 border rounded"
             placeholder="e.g. Strawberry Cake"
             // required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
+          <label className="block text-sm font-semibold mb-1 text-theme-secondary">
             Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-2 border border-amber-200 rounded focus:outline-none focus:ring-2 focus:ring-amber-300 resize-none min-h-[80px]"
+            className="input-theme w-full px-4 py-2 border rounded resize-none min-h-[80px]"
             placeholder="How to make this recipe..."
             // required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
+          <label className="block text-sm font-semibold mb-1 text-theme-secondary">
             Ingredients
           </label>
           <div className=" flex items-center gap-3">
@@ -193,7 +197,7 @@ export default function RecipeForm() {
                 }
               }}
               type="text"
-              className="w-full px-4 py-2 border border-amber-200 rounded focus:outline-none focus:ring-2 focus:ring-amber-300"
+              className="input-theme w-full px-4 py-2 border rounded"
               placeholder="Ingredients"
               // required
             />
@@ -204,7 +208,7 @@ export default function RecipeForm() {
             />
           </div>
           <div className="flex flex-col gap-2 mt-5">
-            <h4 className="font-semibold text-sm text-gray-700 mb-1">
+            <h4 className="font-semibold text-sm text-theme-secondary mb-1">
               Ingredients
             </h4>
             <Ingredients
@@ -216,14 +220,14 @@ export default function RecipeForm() {
           </div>
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-semibold mb-1 text-gray-700">
+          <label className="block text-sm font-semibold mb-1 text-theme-secondary">
             Image (optional)
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={upload}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
+            className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-amber-50 dark:file:bg-amber-900/30 file:text-amber-700 dark:file:text-amber-400 hover:file:bg-amber-100"
           />
           {preview && <img src={preview} />}
         </div>
@@ -234,7 +238,7 @@ export default function RecipeForm() {
               abortController.current?.abort();
               navigate("/");
             }}
-            className="w-full bg-white border border-amber-300 text-amber-500 hover:bg-amber-50 font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg mt-2"
+            className="w-full bg-theme-surface border border-theme text-amber-500 hover:bg-theme-alt font-bold py-2 rounded-lg shadow transition-colors duration-200 text-lg mt-2"
           >
             Cancel
           </button>

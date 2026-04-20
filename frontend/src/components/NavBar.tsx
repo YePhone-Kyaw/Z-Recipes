@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "../helpers/axios";
 import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../hooks/useTheme";
 
 export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -19,7 +21,6 @@ export default function NavBar() {
 
   const navLinks = user
     ? [
-        { to: "/", label: "Home" },
         { to: "/about", label: "About" },
         { to: "/favourites", label: "Favourites" },
         { to: "/profile", label: "Profile" },
@@ -30,26 +31,35 @@ export default function NavBar() {
         { to: "/sign-up", label: "Sign up" },
       ];
 
-  const isActive = (path: string) =>
-    location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
 
   const linkClass = (path: string) =>
-    `px-4 py-2 rounded-lg transition-colors duration-200 font-medium block text-sm ${
-      isActive(path)
-        ? "bg-amber-500 text-white"
-        : "hover:bg-gray-800 hover:text-amber-200 text-gray-200"
+    `px-4 py-2 rounded-lg transition-colors duration-200 font-medium block text-sm text-nav hover-nav ${
+      isActive(path) ? "!bg-amber-500 !text-white" : ""
     }`;
 
   return (
-    <nav className="bg-gray-900 text-gray-100 px-6 py-3 shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="text-xl font-extrabold tracking-wide text-amber-400 flex items-center gap-2 hover:text-amber-300 transition-colors">
-          <span role="img" aria-label="orange">🍊</span>
-          Z-Recipes
+    <nav className="bg-nav border-b border-nav px-6 py-4 sticky top-0 z-50 transition-colors duration-200">
+      <div className="flex items-center justify-between">
+        <Link
+          to="/home"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <img src="/logo.svg" className="w-20 object-contain" alt="Z-Recipes" />
+          <span className="text-xl font-extrabold text-amber-500 tracking-wide">
+            Z-Recipes
+          </span>
         </Link>
 
         <div className="hidden lg:flex items-center gap-1">
           <ul className="flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="px-2 py-2 rounded-lg text-xl hover-nav transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? "☀️" : "🌙"}
+            </button>
             {navLinks.map((link) => (
               <li key={link.to}>
                 <Link to={link.to} className={linkClass(link.to)}>
@@ -60,11 +70,13 @@ export default function NavBar() {
           </ul>
 
           {user && (
-            <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-700">
-              <span className="text-sm text-amber-300 font-semibold">{user.name}</span>
+            <div className="flex items-center gap-3 ml-4 pl-4 border-l divider-nav">
+              <span className="text-sm text-amber-500 font-semibold">
+                {user.name}
+              </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-800 hover:bg-red-900/50 hover:text-red-300 text-gray-300 transition-colors duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-nav hover-nav hover:text-red-500 transition-colors duration-200"
               >
                 Log out
               </button>
@@ -72,15 +84,24 @@ export default function NavBar() {
           )}
         </div>
 
-        <button
-          className="lg:hidden flex flex-col justify-center items-center gap-1.5 p-2 rounded hover:bg-gray-800 transition-colors"
-          onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          <span className={`block w-6 h-0.5 bg-gray-100 transition-transform duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-gray-100 transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-gray-100 transition-transform duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded hover-nav transition-colors text-xl"
+            aria-label="Toggle theme"
+          >
+            {isDark ? "☀️" : "🌙"}
+          </button>
+          <button
+            className="flex flex-col justify-center items-center gap-1.5 p-2 rounded hover-nav transition-colors"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bar-nav transition-transform duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block w-6 h-0.5 bar-nav transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-6 h-0.5 bar-nav transition-transform duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
@@ -91,11 +112,11 @@ export default function NavBar() {
       )}
 
       <ul
-        className={`absolute lg:hidden left-0 right-0 top-full bg-gray-900/98 z-50 px-4 transition-all duration-300 ease-in-out
+        className={`absolute lg:hidden left-0 right-0 top-full bg-nav border-b border-nav z-50 px-4 transition-all duration-300 ease-in-out
           ${menuOpen ? "opacity-100 translate-y-0 pointer-events-auto pb-4" : "opacity-0 -translate-y-2 pointer-events-none"}`}
       >
         {user && (
-          <li className="px-4 py-3 border-b border-gray-700 mb-2 text-amber-300 font-semibold text-sm">
+          <li className="px-4 py-3 border-b divider-nav mb-2 text-amber-500 font-semibold text-sm">
             👋 {user.name}
           </li>
         )}
@@ -111,10 +132,10 @@ export default function NavBar() {
           </li>
         ))}
         {user && (
-          <li className="mt-2 pt-2 border-t border-gray-700">
+          <li className="mt-2 pt-2 border-t divider-nav">
             <button
               onClick={() => { setMenuOpen(false); handleLogout(); }}
-              className="w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-red-900/50 hover:text-red-300 transition-colors duration-200"
+              className="w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-nav hover-nav hover:text-red-500 transition-colors duration-200"
             >
               Log out
             </button>

@@ -10,6 +10,10 @@ export default function Home() {
   const [links, setLinks] = useState(null);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    document.title = "Z Recipes | Home"
+  }, []);
+
   const location = useLocation();
   const searchQuery = new URLSearchParams(location.search);
   const pageUrl = searchQuery.get("page");
@@ -56,7 +60,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-lime-50">
+    <div className="min-h-screen bg-theme">
       <div className="bg-gradient-to-r from-amber-500 to-orange-400 py-10 px-6 text-center shadow-md">
         <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow mb-2 tracking-tight">
           🍊 Discover Delicious Recipes
@@ -70,8 +74,8 @@ export default function Home() {
         {recipes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <span className="text-7xl mb-4">🍽️</span>
-            <h2 className="text-xl font-bold text-gray-500 mb-2">No recipes yet</h2>
-            <p className="text-gray-400 text-sm">Be the first to share something delicious!</p>
+            <h2 className="text-xl font-bold text-theme-muted mb-2">No recipes yet</h2>
+            <p className="text-theme-muted text-sm">Be the first to share something delicious!</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
