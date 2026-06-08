@@ -2,7 +2,7 @@
 
 A full-stack recipe sharing platform where users can discover, post, and save recipes. Built with the MERN stack and TypeScript, deployed on DigitalOcean.
 
-**Live:** [yephonekyaw.com](https://yephonekyaw.com)
+**Live:** [zrecipes.xyz](https://zrecipes.xyz)
 
 ---
 
